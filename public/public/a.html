@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Announcements</title>
+    <link rel="stylesheet" href="styles.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>/* Announcements Section */
+        .announcements-section {
+            padding: 30px;
+            max-width: 800px;
+            margin: auto;
+            text-align: center;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .announcements-section h2 {
+            color: #004aad;
+            margin-bottom: 20px;
+        }
+        
+        .announcement-card {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            text-align: left;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .announcement-card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+        
+        .announcement-card h3 {
+            color: #007bff;
+            font-size: 1.3em;
+            margin-bottom: 5px;
+        }
+        
+        .announcement-card p {
+            color: #666;
+            font-size: 0.9em;
+            margin: 5px 0;
+        }
+        
+        .view-applicants-btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .view-applicants-btn:hover {
+            background-color: #0056b3;
+        }
+        </style>
+</head>
+<body>
+
+<!-- Header Section (reuse your existing header HTML code) -->
+<header class="header">
+    <div class="logo">Craftsmen Network</div>
+    <nav class="nav-links">
+        <a href="index.html">Explore Craftsmen</a>
+        <a href="announcement.html">Job Announcements</a>
+        <a href="#">Small Business Services</a>
+        <a href="#">How It Works</a>
+    </nav>
+    
+    <div class="user-actions">
+        <span class="notifications-icon">🔔</span>
+        <span class="profile-icon">A</span>
+        <span class="language-toggle">EN</span>
+    </div>
+</header>
+
+<!-- Announcements Section -->
+<section class="announcements-section">
+    <h2>My Announcements</h2>
+    
+    <!-- Announcement Card 1 -->
+    <div class="announcement-card">
+        <h3>Woodwork Project</h3>
+        <p>Looking for a skilled carpenter to build custom furniture for a new cafe. Must have at least 5 years of experience.</p>
+        <p>Date Posted: October 25, 2024</p>
+        <a href="applicants.html" class="view-applicants-btn">View Applicants</a>
+    </div>
+
+    <!-- Announcement Card 2 -->
+    <div class="announcement-card">
+        <h3>Metal Gates Installation</h3>
+        <p>Seeking a blacksmith to design and install decorative metal gates. Prior experience in similar projects is required.</p>
+        <p>Date Posted: October 20, 2024</p>
+        <a href="applicants.html" class="view-applicants-btn">View Applicants</a>
+    </div>
+
+</section>
+
+<!-- Footer Section (reuse your existing footer HTML code) -->
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-brand">
+            <img src="logo.jpg" alt="Repect Logo" class="footer-logo">
+            <h3>Craftsmen Network</h3>
+        </div>
+        <div class="footer-links">
+            <a href="#">About Repect</a>
+            <a href="#">Contact Us</a>
+            <a href="#">Blog</a>
+            <a href="#">FAQs</a>
+            <a href="#">Terms & Conditions</a>
+            <a href="#">Privacy Policy</a>
+        </div>
+        <div class="footer-social">
+            <p>Follow us on social media</p>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+        <div class="footer-country">
+            <label for="country">Country:</label>
+            <select id="country" name="country">
+                <option value="Lebanon">Lebanon</option>
+                <option value="USA">USA</option>
+                <option value="UK">UK</option>
+            </select>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>

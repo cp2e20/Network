@@ -35,20 +35,23 @@
           />
 
           <!-- Role Selection -->
-          <div>
-            <label for="role">Role:</label><br />
-            <input type="radio" id="user" name="role" value="user" required />
-            <label for="user">User</label><br />
-            <input
-              type="radio"
-              id="craftsman"
-              name="role"
-              value="craftsman"
-              required
-            />
-            <label for="craftsman">Craftsman</label>
-          </div>
-
+          <div class="role-container">
+            <label class="role-label">Role:</label>
+            <div class="role-options">
+                <label class="role-option">
+                    <input type="radio" id="user" name="role" value="user" required />
+                    <span class="custom-radio"></span>
+                    User
+                </label>
+                <label class="role-option">
+                    <input type="radio" id="craftsman" name="role" value="craftsman" required />
+                    <span class="custom-radio"></span>
+                    Craftsman
+                </label>
+            </div>
+        </div>
+        
+          
           <button type="submit">Sign Up</button>
         </form>
       </div>

@@ -219,3 +219,74 @@ body {
 .container.active .toggle-right{
     transform: translateX(200%);
 }
+
+/* Container styling for the roles */
+/* Container styling for the roles */
+.role-container {
+    margin: 20px 0;
+    font-family: Arial, sans-serif;
+    color: #333;
+    text-align: left;
+}
+
+/* Label styling */
+.role-label {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: block;
+}
+
+/* Flex container for options */
+.role-options {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+/* Option styling */
+.role-option {
+    position: relative;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+/* Hide default radio button */
+.role-option input[type="radio"] {
+    display: none;
+}
+
+/* Custom radio button */
+.custom-radio {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #58a6d9; /* Border color matching the background */
+    border-radius: 50%;
+    margin-right: 8px;
+    display: inline-block;
+    background: #e6f2f9; /* Light background color to match the page */
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+/* Radio checked state */
+input[type="radio"]:checked + .custom-radio {
+    background: #58a6d9; /* Fill color matching the blue theme */
+    border: 2px solid #58a6d9;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Hover effect */
+.custom-radio:hover {
+    border-color: #4593c4; /* Slightly darker blue for hover effect */
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Text styling */
+.role-option {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
