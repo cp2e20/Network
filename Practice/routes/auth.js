@@ -9,27 +9,32 @@ router.get("/users", async (req, res) => {
     res.status(200).json(users);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "An error occurred while fetching users." });
+    res
+      .status(500)
+      .json({ message: "An error occurred while fetching users." });
   }
 });
 
+// Login route with plain-text password comparison
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   try {
+    // Find the user by email
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(401).json({ message: "User not found." });
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
+    // Compare plain-text passwords
+    if (password !== user.password) {
       return res.status(401).json({ message: "Invalid password." });
     }
 
+    // Password matches
     res.json({ message: "Login successful." });
   } catch (error) {
-    console.error(error);
+    console.error("Error during login:", error);
     res.status(500).json({ message: "An error occurred during login." });
   }
 });
