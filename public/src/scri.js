@@ -42,3 +42,27 @@ document.addEventListener("DOMContentLoaded", function () {
     container.classList.remove("active"); // Remove 'active' class from container
   });
 });
+document
+  .getElementById("register-form")
+  .addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const role = document.querySelector('input[name="role"]:checked').value; // Get selected role
+
+    const response = await fetch("http://localhost:3000/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, password, role }),
+    });
+
+    if (response.ok) {
+      alert("Registration successful!");
+    } else {
+      const error = await response.json();
+      alert(`Error: ${error.error || "Something went wrong"}`);
+    }
+  });
+

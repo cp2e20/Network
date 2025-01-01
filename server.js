@@ -14,14 +14,12 @@ dotenv.config();
 const authRoutes = require("./Practice/routes/auth"); // Adjusted path
 const authenticateToken = require("./Practice/middleware/authMiddleware");
 
-
 // Initialize Express
 const app = express();
 
 // Middleware
 app.use(express.json()); // Parse JSON requests
-app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(express.static(path.join(__dirname, "public")));
 
 // Connect to MongoDB
 mongoose
@@ -35,7 +33,6 @@ app.use("/api", authRoutes);
 app.get("/users", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "public", "users.html"));
 });
-
 
 // Use authentication routes
 app.use("/auth", authRoutes);
@@ -52,11 +49,36 @@ app.get("/protected", authenticateToken, (req, res) => {
 // Example: Creating a new user
 app.post("/register", async (req, res) => {
   try {
-    const newUser = new User(req.body); // Ensure req.body is validated
+    // Ensure the request body has valid fields
+    const { name, email, password, role } = req.body;
+
+    // Validate required fields
+    if (!name || !email || !password) {
+      return res
+        .status(400)
+        .send({ error: "Name, email, and password are required." });
+    }
+
+    // Create a new user based on the schema
+    const newUser = new User({
+      name,
+      email,
+      password,
+      role, // Optional, will default to "craftsman" if not provided
+    });
+
+    // Save the user to the database
     const savedUser = await newUser.save();
-    res.status(201).send(savedUser);
+    res.status(201).send(savedUser); // Respond with the saved user
   } catch (err) {
-    res.status(400).send(err);
+    console.error("Error during registration:", err);
+
+    // Handle duplicate email error
+    if (err.code === 11000) {
+      return res.status(400).send({ error: "Email already exists." });
+    }
+
+    res.status(500).send({ error: "Internal server error." });
   }
 });
 
