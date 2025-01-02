@@ -1,292 +1,329 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap");
 
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
-
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Montserrat', sans-serif;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
 }
 
 body {
-    background-image: url('background.png');
-    background-color: lightblue;
-    background-size: cover; /* Cover the entire viewport */
-    background-position: center; /* Center the image in the viewport */
-    background-repeat: no-repeat; /* Do not repeat the image */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    height: 100vh;
+  background-image: url("background.png");
+  background-color: lightblue;
+  background-size: cover; /* Cover the entire viewport */
+  background-position: center; /* Center the image in the viewport */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100vh;
 }
-
 
 #container {
-        background-color: lightblue; /* This should make the background red */
-    }
-    
-
-  
-
-.container{
-    border-radius: 30px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
-    position: relative;
-    overflow: hidden;
-    width: 768px;
-    max-width: 100%;
-    min-height: 480px;
+  background-color: lightblue; /* This should make the background red */
 }
 
-.container p{
-    font-size: 14px;
-    line-height: 20px;
-    letter-spacing: 0.3px;
-    margin: 20px 0;
+.container {
+  border-radius: 30px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+  position: relative;
+  overflow: hidden;
+  width: 768px;
+  max-width: 100%;
+  min-height: 480px;
 }
 
-.container span{
-    font-size: 12px;
+.container p {
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.3px;
+  margin: 20px 0;
 }
 
-.container a{
-    color: #333;
-    font-size: 13px;
-    text-decoration: none;
-    margin: 15px 0 10px;
+.container span {
+  font-size: 12px;
 }
 
-.container button{
-    background-color: blue;
-    color: #fff;
-    font-size: 12px;
-    padding: 10px 45px;
-    border: 1px solid transparent;
-    border-radius: 8px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    margin-top: 10px;
-    cursor: pointer;
+.container a {
+  color: #333;
+  font-size: 13px;
+  text-decoration: none;
+  margin: 15px 0 10px;
 }
 
-.container button.hidden{
-    background-color: transparent;
-    border-color: #fff;
+.container button {
+  background-color: blue;
+  color: #fff;
+  font-size: 12px;
+  padding: 10px 45px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-top: 10px;
+  cursor: pointer;
 }
 
-.container form{
-    background-color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 0 40px;
-    height: 100%;
+.container button.hidden {
+  background-color: transparent;
+  border-color: #fff;
 }
 
-.container input{
-    background-color: #eee;
-    border: none;
-    margin: 8px 0;
-    padding: 10px 15px;
-    font-size: 13px;
-    border-radius: 8px;
-    width: 100%;
-    outline: none;
+.container form {
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 40px;
+  height: 100%;
 }
 
-.form-container{
-    position: absolute;
-    top: 0;
-    height: 100%;
-    transition: all 0.6s ease-in-out;
+.container input {
+  background-color: #eee;
+  border: none;
+  margin: 8px 0;
+  padding: 10px 15px;
+  font-size: 13px;
+  border-radius: 8px;
+  width: 100%;
+  outline: none;
 }
 
-.sign-in{
-    left: 0;
-    width: 50%;
-    z-index: 2;
+.form-container {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  transition: all 0.6s ease-in-out;
 }
 
-.container.active .sign-in{
-    transform: translateX(100%);
+.sign-in {
+  left: 0;
+  width: 50%;
+  z-index: 2;
 }
 
-.sign-up{
-    left: 0;
-    width: 50%;
+.container.active .sign-in {
+  transform: translateX(100%);
+}
+
+.sign-up {
+  left: 0;
+  width: 50%;
+  opacity: 0;
+  z-index: 1;
+}
+
+.container.active .sign-up {
+  transform: translateX(100%);
+  opacity: 1;
+  z-index: 5;
+  animation: move 0.6s;
+}
+
+@keyframes move {
+  0%,
+  49.99% {
     opacity: 0;
     z-index: 1;
-}
-
-.container.active .sign-up{
-    transform: translateX(100%);
+  }
+  50%,
+  100% {
     opacity: 1;
     z-index: 5;
-    animation: move 0.6s;
+  }
 }
 
-@keyframes move{
-    0%, 49.99%{
-        opacity: 0;
-        z-index: 1;
-    }
-    50%, 100%{
-        opacity: 1;
-        z-index: 5;
-    }
+.social-icons {
+  margin: 20px 0;
 }
 
-.social-icons{
-    margin: 20px 0;
+.social-icons a {
+  border: 1px solid #ccc;
+  border-radius: 20%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 3px;
+  width: 40px;
+  height: 40px;
 }
 
-.social-icons a{
-    border: 1px solid #ccc;
-    border-radius: 20%;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 3px;
-    width: 40px;
-    height: 40px;
+.toggle-container {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  transition: all 0.6s ease-in-out;
+  border-radius: 150px 0 0 100px;
+  z-index: 1000;
 }
 
-.toggle-container{
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 50%;
-    height: 100%;
-    overflow: hidden;
-    transition: all 0.6s ease-in-out;
-    border-radius: 150px 0 0 100px;
-    z-index: 1000;
+.container.active .toggle-container {
+  transform: translateX(-100%);
+  border-radius: 0 150px 100px 0;
 }
 
-.container.active .toggle-container{
-    transform: translateX(-100%);
-    border-radius: 0 150px 100px 0;
+.toggle {
+  background-color: blue;
+  height: 100%;
+  background: linear-gradient(to right, lightblue, blue);
+  color: #fff;
+  position: relative;
+  left: -100%;
+  height: 100%;
+  width: 200%;
+  transform: translateX(0);
+  transition: all 0.6s ease-in-out;
 }
 
-.toggle{
-    background-color: blue;
-    height: 100%;
-    background: linear-gradient(to right, lightblue,blue);
-    color: #fff;
-    position: relative;
-    left: -100%;
-    height: 100%;
-    width: 200%;
-    transform: translateX(0);
-    transition: all 0.6s ease-in-out;
+.container.active .toggle {
+  transform: translateX(50%);
 }
 
-.container.active .toggle{
-    transform: translateX(50%);
+.toggle-panel {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 30px;
+  text-align: center;
+  top: 0;
+  transform: translateX(0);
+  transition: all 0.6s ease-in-out;
 }
 
-.toggle-panel{
-    position: absolute;
-    width: 50%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 0 30px;
-    text-align: center;
-    top: 0;
-    transform: translateX(0);
-    transition: all 0.6s ease-in-out;
+.toggle-left {
+  transform: translateX(-200%);
 }
 
-.toggle-left{
-    transform: translateX(-200%);
+.container.active .toggle-left {
+  transform: translateX(0);
 }
 
-.container.active .toggle-left{
-    transform: translateX(0);
+.toggle-right {
+  right: 0;
+  transform: translateX(0);
 }
 
-.toggle-right{
-    right: 0;
-    transform: translateX(0);
-}
-
-.container.active .toggle-right{
-    transform: translateX(200%);
+.container.active .toggle-right {
+  transform: translateX(200%);
 }
 
 /* Container styling for the roles */
 /* Container styling for the roles */
 .role-container {
-    margin: 20px 0;
-    font-family: Arial, sans-serif;
-    color: #333;
-    text-align: left;
+  margin: 20px 0;
+  font-family: Arial, sans-serif;
+  color: #333;
+  text-align: left;
 }
 
 /* Label styling */
 .role-label {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 10px;
-    display: block;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  display: block;
 }
 
 /* Flex container for options */
 .role-options {
-    display: flex;
-    gap: 15px;
-    align-items: center;
+  display: flex;
+  gap: 15px;
+  align-items: center;
 }
 
 /* Option styling */
 .role-option {
-    position: relative;
-    font-size: 16px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
+  position: relative;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
 }
 
 /* Hide default radio button */
 .role-option input[type="radio"] {
-    display: none;
+  display: none;
 }
 
 /* Custom radio button */
 .custom-radio {
-    width: 20px;
-    height: 20px;
-    border: 2px solid #58a6d9; /* Border color matching the background */
-    border-radius: 50%;
-    margin-right: 8px;
-    display: inline-block;
-    background: #e6f2f9; /* Light background color to match the page */
-    position: relative;
-    transition: all 0.3s ease;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #58a6d9; /* Border color matching the background */
+  border-radius: 50%;
+  margin-right: 8px;
+  display: inline-block;
+  background: #e6f2f9; /* Light background color to match the page */
+  position: relative;
+  transition: all 0.3s ease;
 }
 
 /* Radio checked state */
 input[type="radio"]:checked + .custom-radio {
-    background: #58a6d9; /* Fill color matching the blue theme */
-    border: 2px solid #58a6d9;
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+  background: #58a6d9; /* Fill color matching the blue theme */
+  border: 2px solid #58a6d9;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
 }
 
 /* Hover effect */
 .custom-radio:hover {
-    border-color: #4593c4; /* Slightly darker blue for hover effect */
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  border-color: #4593c4; /* Slightly darker blue for hover effect */
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Text styling */
 .role-option {
-    display: flex;
-    align-items: center;
-    gap: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+#craftsman-fields {
+  display: none;
+  transition: all 0.3s ease;
+}
+
+#craftsman-fields input,
+#craftsman-fields textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+/* Scroll container for the entire form */
+/* Adjusting the scroll container */
+#form-scroll-container {
+  height: 100%; /* Take full height of parent container */
+  overflow-y: auto; /* Enable scrolling only when necessary */
+  padding: 0; /* Remove padding to avoid extra space */
+  border: none; /* Remove border to avoid a square appearance */
+  background-color: transparent; /* Match the background */
+}
+
+/* Optional: Style the scroll bar */
+#form-scroll-container::-webkit-scrollbar {
+  width: 8px; /* Narrower scrollbar width */
+}
+
+#form-scroll-container::-webkit-scrollbar-thumb {
+  background: #58a6d9; /* Match the theme's color */
+  border-radius: 4px;
+}
+
+#form-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: #4593c4; /* Darker on hover */
+}
+
+#form-scroll-container::-webkit-scrollbar-track {
+  background: transparent; /* Make the track invisible */
 }

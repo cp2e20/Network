@@ -1,5 +1,6 @@
 const express = require("express");
 const User = require("../models/User");
+const Craftsman = require("../models/Craftsman");
 const router = express.Router();
 
 // Route to fetch all users
@@ -8,7 +9,7 @@ router.get("/users", async (req, res) => {
     const users = await User.find({}, { password: 0 }); // Exclude passwords from the response
     res.status(200).json(users);
   } catch (error) {
-    console.error(error);
+    console.error("Error fetching users:", error);
     res
       .status(500)
       .json({ message: "An error occurred while fetching users." });
@@ -32,11 +33,40 @@ router.post("/login", async (req, res) => {
     }
 
     // Password matches
-    res.json({ message: "Login successful." });
+    res.status(200).json({ message: "Login successful.", userId: user._id });
   } catch (error) {
     console.error("Error during login:", error);
     res.status(500).json({ message: "An error occurred during login." });
   }
 });
 
+// Registration route
+router.post("/register", async (req, res) => {
+  const { name, email, password, role, specialization, experience, bio } =
+    req.body;
+
+  try {
+    // Save user
+    const user = new User({ name, email, password, role });
+    await user.save();
+
+    // Save craftsman-specific data if applicable
+    if (role === "craftsman") {
+      const craftsman = new Craftsman({
+        userId: user._id, // Link craftsman to user
+        specialization,
+        experience,
+        bio,
+      });
+      await craftsman.save();
+    }
+
+    res.status(201).json({ message: "Registration successful!" });
+  } catch (error) {
+    console.error("Error during registration:", error);
+    res.status(500).json({ message: "Registration failed. Please try again." });
+  }
+});
+
+// Export the router
 module.exports = router;
