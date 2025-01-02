@@ -53,51 +53,57 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Handle Registration Form Submission
-  const registerForm = document.getElementById("register-form");
-  if (registerForm) {
-    registerForm.addEventListener("submit", async function (event) {
-      event.preventDefault();
+  // Attach event listener to the "Sign Up" form
+  document
+    .getElementById("register-form")
+    .addEventListener("submit", async (e) => {
+      e.preventDefault(); // Prevent the default form submission
 
-      const name = document.getElementById("name").value.trim();
-      const email = document.getElementById("register-email").value.trim();
-      const password = document
-        .getElementById("register-password")
-        .value.trim();
+      // Get input values
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("login-email").value;
+      const password = document.getElementById("login-password").value;
       const role = document.querySelector('input[name="role"]:checked').value;
 
-      const payload = { name, email, password, role };
-
-      if (role === "craftsman") {
-        payload.specialization = document
-          .getElementById("craftsman-specialization")
-          .value.trim();
-        payload.experience = document
-          .getElementById("craftsman-experience")
-          .value.trim();
-        payload.bio = document.getElementById("craftsman-bio").value.trim();
-      }
+      // Additional fields for craftsman (optional)
+      const specialization =
+        document.getElementById("craftsman-specialization").value || null;
+      const experience =
+        document.getElementById("craftsman-experience").value || null;
+      const bio = document.getElementById("craftsman-bio").value || null;
 
       try {
-        const response = await fetch("http://localhost:3000/register", {
+        // Send data to the server
+        const response = await fetch("/register", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            password,
+            role,
+            specialization,
+            experience,
+            bio,
+          }),
         });
 
-        const data = await response.json();
-
+        // Handle response
         if (response.ok) {
-          alert("Registration successful!");
-          container.classList.remove("active"); // Redirect to Sign In form
+          const data = await response.json();
+          alert("Registration successful! Welcome, " + data.name);
+          console.log(data);
         } else {
-          alert(data.error || "Something went wrong.");
+          const error = await response.json();
+          alert("Error: " + error.error);
         }
-      } catch (error) {
-        console.error("Error during registration:", error);
-        alert("An error occurred during registration. Please try again.");
+      } catch (err) {
+        console.error("Error during registration:", err);
+        alert("Something went wrong. Please try again later.");
       }
     });
-  }
 
   // Toggle visibility of craftsman fields
   const craftsmanRadio = document.getElementById("craftsman");

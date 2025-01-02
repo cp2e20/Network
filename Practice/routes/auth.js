@@ -41,37 +41,33 @@ router.post("/login", async (req, res) => {
 });
 
 // Registration route
-
 router.post("/register", async (req, res) => {
-  const { name, email, password, role, skill, experience, description } =
+  const { name, email, password, role, specialization, experience, bio } =
     req.body;
 
   try {
-    // Create the user
+    // Save user
     const user = new User({ name, email, password, role });
-    const savedUser = await user.save();
+    await user.save();
 
-    // If the user is a craftsman, save additional details in Craftsman collection
+    // Save craftsman-specific data if applicable
     if (role === "craftsman") {
       const craftsman = new Craftsman({
-        userId: savedUser._id, // Link the craftsman to the user
-        skill,
-        experience,
-        description,
+        userId: user._id, // Link craftsman to user
+        skill: specialization, // Map "specialization" from frontend to "skill" in schema
+        experience: parseInt(experience, 10), // Convert experience to a number
+        description: bio, // Map "bio" from frontend to "description" in schema
       });
+
       await craftsman.save();
     }
 
     res.status(201).json({ message: "Registration successful!" });
   } catch (error) {
     console.error("Error during registration:", error);
-
-    // Handle duplicate email error
-    if (error.code === 11000) {
-      return res.status(400).json({ error: "Email already exists." });
-    }
-
-    res.status(500).json({ error: "Registration failed. Please try again." });
+    res.status(500).json({ message: "Registration failed. Please try again." });
   }
 });
+
+// Export the router
 module.exports = router;
