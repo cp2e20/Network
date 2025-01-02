@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Applicants</title>
-    
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>/* Basic Reset */
         * {
@@ -267,6 +268,93 @@
         .applicant-card button:hover {
             background-color: #0056b3;
         }
+        .category-card {
+    animation: fadeInUp 1s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.btn {
+    background: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.btn:hover {
+    background: #007bff;
+    transform: scale(1.05);
+}
+
+.footer-links a {
+    color: #007bff;
+    font-size: 1em;
+}
+
+.social-icons a {
+    color: #007bff;
+}
+
+.social-icons a:hover {
+    color: #007bff;
+}
+body {
+    background: linear-gradient(180deg, #f4f8fb, #e8eef5);
+}
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+h2 {
+    font-size: 2em;
+    font-weight: bold;
+    color: #004aad;
+}
+
+p {
+    font-size: 1em;
+    color: #666;
+}.category-card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.category-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.category-card h3 {
+    font-size: 1.4em;
+    font-weight: bold;
+}
+
+.category-card i {
+    font-size: 2em;
+    color: #004aad;
+    margin-bottom: 10px;
+}
+
+
+
+
         </style>
 </head>
 <body>
