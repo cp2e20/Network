@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (response.ok) {
           alert(data.message);
-          window.location.href = "/dashboard.html"; // Redirect after successful login
+          window.location.href = "./public/dashboard.html"; // Redirect after successful login
         } else {
           alert(data.message || "Login failed.");
         }

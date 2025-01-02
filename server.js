@@ -6,7 +6,7 @@ const Announcement = require("./Practice/models/Announcement");
 const Applicant = require("./Practice/models/Applicant");
 const path = require("path");
 const dotenv = require("dotenv");
-
+const categoriesRoutes = require("./Practice/routes/categories");
 // Load environment variables
 dotenv.config();
 
@@ -17,7 +17,7 @@ const authenticateToken = require("./Practice/middleware/authMiddleware");
 // Initialize Express
 const app = express();
 
-// Middleware
+// Middleware 
 app.use(express.json()); // Parse JSON requests
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -84,6 +84,10 @@ app.post("/register", async (req, res) => {
     res.status(500).send({ error: "Internal server error." });
   }
 });
+
+
+app.use("/categories", categoriesRoutes);
+
 
 // Start the server
 const PORT = process.env.PORT || 3000;
