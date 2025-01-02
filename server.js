@@ -33,7 +33,10 @@ app.use("/api", authRoutes);
 app.get("/users", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "public", "users.html"));
 });
-
+app.get("/dashboard", (req, res) => {
+  console.log("Serving dashboard.html");
+  res.sendFile(path.join(__dirname, "public", "public", "dashboard.html"));
+});
 // Use authentication routes
 app.use("/auth", authRoutes);
 // Serve static files

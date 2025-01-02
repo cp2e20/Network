@@ -41,22 +41,23 @@ router.post("/login", async (req, res) => {
 });
 
 // Registration route
+
 router.post("/register", async (req, res) => {
-  const { name, email, password, role, specialization, experience, bio } =
+  const { name, email, password, role, skill, experience, description } =
     req.body;
 
   try {
-    // Save user
+    // Create the user
     const user = new User({ name, email, password, role });
-    await user.save();
+    const savedUser = await user.save();
 
-    // Save craftsman-specific data if applicable
+    // If the user is a craftsman, save additional details in Craftsman collection
     if (role === "craftsman") {
       const craftsman = new Craftsman({
-        userId: user._id, // Link craftsman to user
-        specialization,
+        userId: savedUser._id, // Link the craftsman to the user
+        skill,
         experience,
-        bio,
+        description,
       });
       await craftsman.save();
     }
@@ -64,9 +65,13 @@ router.post("/register", async (req, res) => {
     res.status(201).json({ message: "Registration successful!" });
   } catch (error) {
     console.error("Error during registration:", error);
-    res.status(500).json({ message: "Registration failed. Please try again." });
+
+    // Handle duplicate email error
+    if (error.code === 11000) {
+      return res.status(400).json({ error: "Email already exists." });
+    }
+
+    res.status(500).json({ error: "Registration failed. Please try again." });
   }
 });
-
-// Export the router
 module.exports = router;
