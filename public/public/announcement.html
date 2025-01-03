@@ -266,7 +266,7 @@ html, body {
     <!-- Announcements List Section -->
     <div class="announcements-list">
         <a href="a.html" class="button-link">
-            <button class="job-announcements-button">View Job Announcements</button>
+            <button id="view-announcements" class="job-announcements-button">View Announcements</button>
         </a>
     </div>
 
@@ -319,42 +319,42 @@ html, body {
     
     <script >
         // Reference to the form and announcements div
-const announcementForm = document.getElementById('announcement-form');
-const announcementsDiv = document.getElementById('announcements');
-
-// Function to create an announcement card
-function createAnnouncementCard(title, description, deadline, contactInfo) {
-    const announcementCard = document.createElement('div');
-    announcementCard.className = 'announcement-card';
-
-    announcementCard.innerHTML = `
-        <h4>${title}</h4>
-        <p>${description}</p>
-        <p><strong>Deadline:</strong> ${deadline}</p>
-        <p class="contact-info"><strong>Contact:</strong> ${contactInfo}</p>
-    `;
-
-    return announcementCard;
-}
-
-// Event listener for form submission
-announcementForm.addEventListener('submit', function(event) {
+document.getElementById("announcement-form").addEventListener("submit", async function(event) {
     event.preventDefault();
 
-    // Get form values
-    const title = document.getElementById('job-title').value;
-    const description = document.getElementById('job-description').value;
-    const deadline = document.getElementById('job-deadline').value;
-    const contactInfo = document.getElementById('contact-info').value;
+    const title = document.getElementById("job-title").value.trim();
+    const description = document.getElementById("job-description").value.trim();
+    const deadline = document.getElementById("job-deadline").value.trim();
+    const contactInfo = document.getElementById("contact-info").value.trim();
 
-    // Create a new announcement card and append to announcementsDiv
-    const newAnnouncement = createAnnouncementCard(title, description, deadline, contactInfo);
-    announcementsDiv.appendChild(newAnnouncement);
+    if (!title || !description || !deadline || !contactInfo) {
+        alert("Please fill out all fields.");
+        return;
+    }
 
-    // Reset form after submission
-    announcementForm.reset();
+    const announcementData = { title, description, deadline, contactInfo };
+
+    try {
+        const response = await fetch("/api/announcements", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(announcementData),
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            alert("Announcement posted successfully!");
+            document.getElementById("announcement-form").reset(); // Clear the form
+        } else {
+            alert(`Failed to post announcement: ${result.error}`);
+        }
+    } catch (error) {
+        console.error("Error posting announcement:", error);
+        alert("An error occurred while posting the announcement. Please try again later.");
+    }
 });
-
     </script>
 </body>
 </html>
