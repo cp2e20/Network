@@ -7,14 +7,20 @@
   <link rel="stylesheet" href="../src/styles.css">
 </head>
 <body>
-  <header>
-    <h1>Craftsman Profile</h1>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="marketplace.html">Marketplace</a>
-      <a href="cart.html">Cart</a>
+  <!-- Header Section -->
+  <header class="header">
+    <div class="logo">Craftsmen Network</div>
+    <nav class="nav-links">
+        <a href="dashboard.html".html">Explore Craftsmen</a>
+        <a href="announcement.html">Job Announcements</a>
+       
     </nav>
-  </header>
+    <div class="user-actions">
+        <span class="notifications-icon">🔔</span>
+        <span class="profile-icon">A</span>
+        <span class="language-toggle">EN</span>
+    </div>
+</header>
   <main>
     <section class="profile">
       <img src="profile-pic.jpg" alt="Profile Picture">
@@ -24,5 +30,38 @@
       <p><strong>Description:</strong> Expert carpenter with 10 years of experience in custom furniture and woodwork.</p>
     </section>
   </main>
+  <footer class="footer">
+    <div class="footer-container">
+        <div class="footer-brand">
+            <img src="logo.jpg" alt="Repect Logo" class="footer-logo">
+            <h3>Craftsmen Network</h3>
+        </div>
+        <div class="footer-links">
+            <a href="#">About Repect</a>
+            <a href="#">Contact Us</a>
+            <a href="#">Blog</a>
+            <a href="#">FAQs</a>
+            <a href="#">Terms & Conditions</a>
+            <a href="#">Privacy Policy</a>
+        </div>
+        <div class="footer-social">
+            <p>Follow us on social media</p>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+        <div class="footer-country">
+            <label for="country">Country:</label>
+            <select id="country" name="country">
+                <option value="Lebanon">Lebanon</option>
+                <option value="USA">USA</option>
+                <option value="UK">UK</option>
+            </select>
+        </div>
+    </div>
+</footer>
 </body>
 </html>

@@ -1,4 +1,5 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const User = require("../models/User");
 const Craftsman = require("../models/Craftsman");
 const router = express.Router();
@@ -10,9 +11,7 @@ router.get("/users", async (req, res) => {
     res.status(200).json(users);
   } catch (error) {
     console.error("Error fetching users:", error);
-    res
-      .status(500)
-      .json({ message: "An error occurred while fetching users." });
+    res.status(500).json({ message: "An error occurred while fetching users." });
   }
 });
 
@@ -33,8 +32,6 @@ router.post("/login", async (req, res) => {
     }
 
     // Password matches
-    res.status(200).json({ message: "Login successful.", userId: user._id });
-    // Password matches, include role in the response
     res.status(200).json({
       message: "Login successful.",
       userId: user._id,
@@ -45,14 +42,17 @@ router.post("/login", async (req, res) => {
     res.status(500).json({ message: "An error occurred during login." });
   }
 });
-// Registration route
+
+// Registration route without password hashing
 router.post("/register", async (req, res) => {
-  const { name, email, password, role, specialization, experience, bio } =
-    req.body;
+  const { name, email, password, role, specialization, experience, bio } = req.body;
 
   try {
-    // Save user data to the User table
-    const user = new User({ name, email, password, role });
+    // Validate role
+    const allowedRoles = ["user", "craftsman"];
+    if (!allowedRoles.includes(role)) {
+      return res.status(400).json({ message: "Invalid role." });
+    }
 
     // Check if the email already exists
     const existingUser = await User.findOne({ email });
@@ -62,39 +62,37 @@ router.post("/register", async (req, res) => {
       });
     }
 
+    // Save user data to the User table with plain-text password
+    const user = new User({ name, email, password, role });
     const savedUser = await user.save();
 
     // If the role is Craftsman, handle craftsman-specific data
     if (role === "craftsman") {
       if (!specialization || !experience || !bio) {
-        return res
-          .status(400)
-          .json({ message: "All Craftsman fields are required." });
+        return res.status(400).json({ message: "All Craftsman fields are required." });
+      }
+
+      // Convert experience to integer
+      const parsedExperience = parseInt(experience, 10);
+      if (isNaN(parsedExperience)) {
+        return res.status(400).json({ message: "Experience must be a valid number." });
       }
 
       const craftsman = new Craftsman({
         userId: mongoose.Types.ObjectId(savedUser._id),
         skill: specialization,
-        experience: parseInt(experience, 10),
+        experience: parsedExperience,
         description: bio,
       });
 
+      // Save the craftsman data
       await craftsman.save();
     }
 
     res.status(201).json({ message: "Registration successful" });
   } catch (error) {
-    // Handle duplicate email error
-    if (error.code === 11000) {
-      return res.status(400).json({
-        message: "Email already exists. Please use a different email.",
-      });
-    }
-
-    console.error("Error during registration:", error);
-    res
-      .status(500)
-      .json({ message: "Registration failed. Please try again later." });
+    console.error("Error during registration:", error.stack || error);
+    res.status(500).json({ message: "Registration failed. Please try again later." });
   }
 });
 

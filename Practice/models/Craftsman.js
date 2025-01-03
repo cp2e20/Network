@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
 
-const craftsmanSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // Linked to Users
+const CraftsmanSchema = new mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   skill: { type: String, required: true },
-  experience: { type: Number, required: true }, // Years of experience
-  rating: { type: Number, default: 0 },
-  description: String,
+  experience: { type: Number, required: true }, // Ensure it's a Number type
+  description: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model("Craftsman", craftsmanSchema);
+const Craftsman = mongoose.model('Craftsman', CraftsmanSchema);
+module.exports = Craftsman;
