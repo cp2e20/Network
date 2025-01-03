@@ -67,22 +67,46 @@
             </div>
 
             <!-- Additional fields for Craftsman -->
-            <!-- Additional fields for Craftsman -->
             <div id="craftsman-fields">
-              <input
-                type="text"
-                id="craftsman-specialization"
-                placeholder="Specialization"
-              />
+              <!-- Dropdown for Specialization -->
+              <select id="craftsman-specialization" required>
+                <option value="" disabled selected>
+                  Select Specialization
+                </option>
+                <option value="Carpenter">Carpenter</option>
+                <option value="Blacksmith">Blacksmith</option>
+                <option value="Tailor">Tailor</option>
+                <option value="Painter">Painter</option>
+                <option value="Plumber">Plumber</option>
+                <option value="Electrician">Electrician</option>
+                <option value="Stonemason">Stonemason</option>
+                <option value="Glassblower">Glassblower</option>
+                <option value="Shoemaker">Shoemaker</option>
+                <option value="Jeweler">Jeweler</option>
+                <option value="Potter">Potter</option>
+                <option value="Leatherworker">Leatherworker</option>
+                <option value="Welder">Welder</option>
+                <option value="Cabinetmaker">Cabinetmaker</option>
+                <option value="Engraver">Engraver</option>
+                <option value="Weaver">Weaver</option>
+                <option value="Metalworker">Metalworker</option>
+                <option value="Stone Carver">Stone Carver</option>
+                <option value="Bookbinder">Bookbinder</option>
+                <option value="Calligrapher">Calligrapher</option>
+              </select>
+
+              <!-- Additional Fields -->
               <input
                 type="text"
                 id="craftsman-experience"
                 placeholder="Years of Experience"
+                required
               />
               <textarea
                 id="craftsman-bio"
                 placeholder="Brief Bio"
                 rows="3"
+                required
               ></textarea>
             </div>
 

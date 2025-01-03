@@ -32,6 +32,8 @@ router.post("/login", async (req, res) => {
       return res.status(401).json({ message: "Invalid password." });
     }
 
+    // Password matches
+    res.status(200).json({ message: "Login successful.", userId: user._id });
     // Password matches, include role in the response
     res.status(200).json({
       message: "Login successful.",
@@ -43,33 +45,56 @@ router.post("/login", async (req, res) => {
     res.status(500).json({ message: "An error occurred during login." });
   }
 });
-
 // Registration route
 router.post("/register", async (req, res) => {
   const { name, email, password, role, specialization, experience, bio } =
     req.body;
 
   try {
-    // Save user
+    // Save user data to the User table
     const user = new User({ name, email, password, role });
-    await user.save();
 
-    // Save craftsman-specific data if applicable
+    // Check if the email already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({
+        message: "Email already exists. Please use a different email.",
+      });
+    }
+
+    const savedUser = await user.save();
+
+    // If the role is Craftsman, handle craftsman-specific data
     if (role === "craftsman") {
+      if (!specialization || !experience || !bio) {
+        return res
+          .status(400)
+          .json({ message: "All Craftsman fields are required." });
+      }
+
       const craftsman = new Craftsman({
-        userId: user._id, // Link craftsman to user
-        skill: specialization, // Map "specialization" from frontend to "skill" in schema
-        experience: parseInt(experience, 10), // Convert experience to a number
-        description: bio, // Map "bio" from frontend to "description" in schema
+        userId: mongoose.Types.ObjectId(savedUser._id),
+        skill: specialization,
+        experience: parseInt(experience, 10),
+        description: bio,
       });
 
       await craftsman.save();
     }
 
-    res.status(201).json({ message: "Registration successful!" });
+    res.status(201).json({ message: "Registration successful" });
   } catch (error) {
+    // Handle duplicate email error
+    if (error.code === 11000) {
+      return res.status(400).json({
+        message: "Email already exists. Please use a different email.",
+      });
+    }
+
     console.error("Error during registration:", error);
-    res.status(500).json({ message: "Registration failed. Please try again." });
+    res
+      .status(500)
+      .json({ message: "Registration failed. Please try again later." });
   }
 });
 

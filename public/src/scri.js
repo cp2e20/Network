@@ -58,73 +58,129 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Handle Registration Form Submission
-  // Attach event listener to the "Sign Up" form
-  document
-    .getElementById("register-form")
-    .addEventListener("submit", async (e) => {
-      e.preventDefault(); // Prevent the default form submission
-
-      // Get input values
-      const name = document.getElementById("name").value;
-      const email = document.getElementById("login-email").value;
-      const password = document.getElementById("login-password").value;
-      const role = document.querySelector('input[name="role"]:checked').value;
-
-      // Additional fields for craftsman (optional)
-      const specialization =
-        document.getElementById("craftsman-specialization").value || null;
-      const experience =
-        document.getElementById("craftsman-experience").value || null;
-      const bio = document.getElementById("craftsman-bio").value || null;
-
-      try {
-        // Send data to the server
-        const response = await fetch("/register", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name,
-            email,
-            password,
-            role,
-            specialization,
-            experience,
-            bio,
-          }),
-        });
-
-        // Handle response
-        if (response.ok) {
-          const data = await response.json();
-          alert("Registration successful! Welcome, " + data.name);
-          console.log(data);
-        } else {
-          const error = await response.json();
-          alert("Error: " + error.error);
-        }
-      } catch (err) {
-        console.error("Error during registration:", err);
-        alert("Something went wrong. Please try again later.");
-      }
-    });
-
-  // Toggle visibility of craftsman fields
+  // Toggle visibility of craftsman fields and submit user data
   const craftsmanRadio = document.getElementById("craftsman");
   const userRadio = document.getElementById("user");
   const craftsmanFields = document.getElementById("craftsman-fields");
 
-  if (craftsmanFields) craftsmanFields.style.display = "none"; // Hide initially
+  if (craftsmanFields) craftsmanFields.style.display = "none";
 
   if (craftsmanRadio && userRadio) {
-    craftsmanRadio.addEventListener("change", function () {
+    craftsmanRadio.addEventListener("change", async function () {
       craftsmanFields.style.display = "block";
+
+      // Submit user entry to the User table when "Craftsman" is selected
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("login-email").value.trim();
+      const password = document.getElementById("login-password").value.trim();
+
+      if (!name || !email || !password) {
+        alert(
+          "Please fill out Name, Email, and Password before selecting Craftsman."
+        );
+        return;
+      }
+
+      try {
+        const response = await fetch("/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name,
+            email,
+            password,
+            role: "craftsman",
+          }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          alert("User entry created successfully!");
+          console.log(data);
+        } else {
+          alert(data.message || "Error occurred while creating user entry.");
+        }
+      } catch (error) {
+        console.error("Error creating user entry:", error);
+      }
     });
 
     userRadio.addEventListener("change", function () {
       craftsmanFields.style.display = "none";
     });
   }
+  document.getElementById("login-email").addEventListener("blur", async () => {
+    const email = document.getElementById("login-email").value.trim();
+
+    try {
+      const response = await fetch("/check-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log(data.message);
+      } else {
+        alert(data.message || "This email is already registered.");
+      }
+    } catch (error) {
+      console.error("Error checking email availability:", error);
+    }
+  });
+
+  // Handle Final Registration Form Submission (Complete Craftsman Data)
+  document
+    .getElementById("register-form")
+    .addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("login-email").value.trim();
+      const password = document.getElementById("login-password").value.trim();
+      const role = document.querySelector('input[name="role"]:checked').value;
+
+      // Additional fields for Craftsman
+      const specialization = document
+        .getElementById("craftsman-specialization")
+        .value.trim();
+      const experience = document
+        .getElementById("craftsman-experience")
+        .value.trim();
+      const bio = document.getElementById("craftsman-bio").value.trim();
+
+      // Prepare the payload
+      const payload = { name, email, password, role };
+      if (role === "craftsman") {
+        if (!specialization || !experience || !bio) {
+          alert("Please fill out all Craftsman-specific fields.");
+          return;
+        }
+        payload.specialization = specialization;
+        payload.experience = experience;
+        payload.bio = bio;
+      }
+
+      try {
+        const response = await fetch("/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          alert("Registration successful!");
+        } else {
+          alert(data.message || "Error occurred during registration.");
+        }
+      } catch (error) {
+        console.error("Error during registration:", error);
+        alert("An unexpected error occurred. Please try again.");
+      }
+    });
 });
