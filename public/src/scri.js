@@ -24,7 +24,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (response.ok) {
           alert(data.message);
-          window.location.href = "./public/dashboard.html"; // Redirect after successful login
+
+          // Redirect based on role
+          if (data.role === "craftsman") {
+            window.location.href = "./public/Cdashboard.html";
+          } else {
+            window.location.href = "./public/dashboard.html";
+          }
         } else {
           alert(data.message || "Login failed.");
         }
