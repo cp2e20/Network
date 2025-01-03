@@ -1,230 +1,344 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Craftsmen Dashboard</title>
-    <link rel="stylesheet" href="../src/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-</head>
-<body>
+    <link rel="stylesheet" href="../src/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <!-- Internal Styling -->
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+        background: #f4f8fb;
+        margin: 0;
+        padding: 0;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #004aad;
+        padding: 15px 20px;
+        color: white;
+      }
+
+      .header .logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+
+      .nav-links a {
+        color: white;
+        margin: 0 10px;
+        text-decoration: none;
+        font-size: 1rem;
+      }
+
+      .nav-links a:hover {
+        text-decoration: underline;
+      }
+
+      .user-actions {
+        display: flex;
+        align-items: center;
+      }
+
+      .dashboard-overview {
+        margin: 20px;
+        text-align: center;
+      }
+
+      .dashboard-metrics {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 20px;
+      }
+
+      .metric-card {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      .job-announcements,
+      .manage-applications {
+        margin: 20px;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .job-card {
+        border-bottom: 1px solid #e0e0e0;
+        padding: 10px 0;
+      }
+
+      .job-card h3 {
+        margin: 0;
+      }
+
+      .view-all {
+        display: block;
+        margin-top: 10px;
+        text-align: right;
+        color: #004aad;
+        text-decoration: none;
+      }
+
+      .view-all:hover {
+        text-decoration: underline;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+      }
+
+      th,
+      td {
+        border: 1px solid #e0e0e0;
+        padding: 8px;
+        text-align: left;
+      }
+
+      th {
+        background: #f4f8fb;
+      }
+
+      .status {
+        padding: 5px 10px;
+        border-radius: 5px;
+      }
+
+      .status.pending {
+        background: #ffd700;
+        color: #000;
+      }
+
+      .status.approved {
+        background: #004aad;
+        color: white;
+      }
+      .apply-button {
+        background-color: #007bff;
+
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 15px;
+        cursor: pointer;
+        font-size: 1em;
+        transition: background-color 0.3s ease;
+      }
+
+      .apply-button:hover {
+        background-color: #004aad;
+      }
+
+      .job-card {
+        border-bottom: 1px solid #e0e0e0;
+        padding: 15px 0;
+        text-align: left;
+      }
+
+      .job-card h3 {
+        margin-bottom: 5px;
+      }
+
+      .job-card p {
+        margin: 5px 0;
+      }
+    </style>
+  </head>
+  <body>
     <!-- Header -->
     <header class="header">
-        <div class="logo">Craftsmen Network</div>
-        <nav class="nav-links">
-            <a href="dashboard.html">Dashboard</a>
-            <a href="my_applications.html">My Applications</a>
-            <a href="profile.html">Profile</a>
-        </nav>
-        
-        <div class="user-actions">
-            <span class="notification-icon">
-                <i class="fas fa-bell"></i>
-                <span class="notification-badge">3</span>
-            </span>
-            <div class="profile-icon">C</div>
-            <a href="#" class="logout-link">Logout</a>
-        </div>
+      <div class="logo">Craftsmen Network</div>
+      <nav class="nav-links">
+        <a href="Cdashboard.html">Dashboard</a>
+        <a href="Cmy_applications.html">My Applications</a>
+        <a href="Cprofile.html">Profile</a>
+      </nav>
+
+      <div class="user-actions">
+        <span class="notification-icon">
+          <i class="fas fa-bell"></i>
+          <span class="notification-badge">3</span>
+        </span>
+        <div class="profile-icon">C</div>
+        <a href="#" class="logout-link">Logout</a>
+      </div>
     </header>
 
     <!-- Dashboard Overview -->
     <section class="dashboard-overview">
-        <h2>Welcome, [Craftsman Name]</h2>
-        <p>Your personalized dashboard to manage job applications and explore new opportunities.</p>
-        <div class="dashboard-metrics">
-            <div class="metric-card">
-                <h3>Total Applications</h3>
-                <p>12</p>
-            </div>
-            <div class="metric-card">
-                <h3>Jobs Applied</h3>
-                <p>8</p>
-            </div>
-            <div class="metric-card">
-                <h3>Jobs Available</h3>
-                <p>25</p>
-            </div>
+      <h2>Welcome, [Craftsman Name]</h2>
+      <p>
+        Your personalized dashboard to manage job applications and explore new
+        opportunities.
+      </p>
+      <div class="dashboard-metrics">
+        <div class="metric-card">
+          <h3>Total Applications</h3>
+          <p>12</p>
         </div>
+        <div class="metric-card">
+          <h3>Jobs Applied</h3>
+          <p>8</p>
+        </div>
+        <div class="metric-card">
+          <h3>Jobs Available</h3>
+          <p>25</p>
+        </div>
+      </div>
     </section>
 
     <!-- Job Announcements -->
-    <section class="job-announcements">
-        <h2>Latest Job Announcements</h2>
-        <div class="job-card">
-            <h3>Furniture Repair</h3>
-            <p>Location: Beirut</p>
-            <p>Payment: $150</p>
-            <button onclick="window.location.href='job_details.html?id=1'">View Details</button>
+    <section>
+      <h2 class="job-announcements-header">Job Announcements</h2>
+      <div class="job-announcements">
+        <div id="job-announcements-container">
+          <!-- Dynamically populated content -->
         </div>
-        <div class="job-card">
-            <h3>Tailoring Custom Suits</h3>
-            <p>Location: Tripoli</p>
-            <p>Payment: $200</p>
-            <button onclick="window.location.href='job_details.html?id=2'">View Details</button>
-        </div>
-        <div class="job-card">
-            <h3>Metal Welding</h3>
-            <p>Location: Saida</p>
-            <p>Payment: $180</p>
-            <button onclick="window.location.href='job_details.html?id=3'">View Details</button>
-        </div>
-        <a href="job_announcements.html" class="view-all">View All Announcements</a>
+      </div>
     </section>
 
-   
     <!-- Footer -->
-     <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-brand">
-                <img src="logo.jpg" alt="Repect Logo" class="footer-logo">
-                <h3>Craftsmen Network</h3>
-            </div>
-            <div class="footer-links">
-                <a href="#">About Repect</a>
-                <a href="#">Contact Us</a>
-                <a href="#">Blog</a>
-                <a href="#">FAQs</a>
-                <a href="#">Terms & Conditions</a>
-                <a href="#">Privacy Policy</a>
-            </div>
-            <div class="footer-social">
-                <p>Follow us on social media</p>
-                <div class="social-icons">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                </div>
-            </div>
-            <div class="footer-country">
-                <label for="country">Country:</label>
-                <select id="country" name="country">
-                    <option value="Lebanon">Lebanon</option>
-                    <option value="USA">USA</option>
-                    <option value="UK">UK</option>
-                </select>
-            </div>
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-brand">
+          <img src="logo.jpg" alt="Repect Logo" class="footer-logo" />
+          <h3>Craftsmen Network</h3>
         </div>
+        <div class="footer-links">
+          <a href="#">About Repect</a>
+          <a href="#">Contact Us</a>
+          <a href="#">Blog</a>
+          <a href="#">FAQs</a>
+          <a href="#">Terms & Conditions</a>
+          <a href="#">Privacy Policy</a>
+        </div>
+        <div class="footer-social">
+          <p>Follow us on social media</p>
+          <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+          </div>
+        </div>
+        <div class="footer-country">
+          <label for="country">Country:</label>
+          <select id="country" name="country">
+            <option value="Lebanon">Lebanon</option>
+            <option value="USA">USA</option>
+            <option value="UK">UK</option>
+          </select>
+        </div>
+      </div>
     </footer>
 
-    <!-- Internal Styling -->
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            background: #f4f8fb;
-            margin: 0;
-            padding: 0;
-        }
+    <script>
+      async function fetchAnnouncements() {
+        const container = document.querySelector(
+          "#job-announcements-container"
+        );
+        container.innerHTML = "<p>Loading...</p>";
 
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #004aad;
-            padding: 15px 20px;
-            color: white;
-        }
+        try {
+          const response = await fetch("/api/announcements");
+          if (!response.ok) throw new Error("Failed to fetch announcements");
 
-        .header .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
+          const announcements = await response.json();
 
-        .nav-links a {
-            color: white;
-            margin: 0 10px;
-            text-decoration: none;
-            font-size: 1rem;
-        }
+          if (announcements.length === 0) {
+            container.innerHTML = "<p>No job announcements available.</p>";
+            return;
+          }
 
-        .nav-links a:hover {
-            text-decoration: underline;
+          // Dynamically create job cards with full details
+          container.innerHTML = announcements
+            .map(
+              (announcement) => `
+        <div class="job-card">
+          <h3>${announcement.title}</h3>
+          <p><strong>Location:</strong> ${
+            announcement.location || "Unknown"
+          }</p>
+          <p><strong>Payment:</strong> $${
+            announcement.payment || "Not specified"
+          }</p>
+          <p><strong>Description:</strong> ${
+            announcement.description || "No description provided."
+          }</p>
+          <p><strong>Deadline:</strong> ${
+            announcement.deadline
+              ? new Date(announcement.deadline).toLocaleDateString()
+              : "No deadline specified."
+          }</p>
+          <p><strong>Contact Info:</strong> ${
+            announcement.contactInfo || "Not provided"
+          }</p>
+          <button class="apply-button" onclick="applyForJob('${
+            announcement._id
+          }')">Apply</button>
+        </div>
+      `
+            )
+            .join("");
+        } catch (error) {
+          console.error("Error fetching announcements:", error);
+          container.innerHTML = "<p>Failed to load announcements.</p>";
         }
+      }
 
-        .user-actions {
-            display: flex;
-            align-items: center;
-        }
+      function applyForJob(jobId) {
+        // Handle job application logic here
+        alert(`Applied for job with ID: ${jobId}`);
+      }
 
-        .dashboard-overview {
-            margin: 20px;
-            text-align: center;
-        }
+      document.addEventListener("DOMContentLoaded", fetchAnnouncements);
+      async function fetchDashboardMetrics() {
+        try {
+          const response = await fetch("/api/dashboard");
+          if (!response.ok)
+            throw new Error("Failed to fetch dashboard metrics");
 
-        .dashboard-metrics {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 20px;
-        }
+          const {
+            totalApplications = 0,
+            jobsApplied = 0,
+            jobsAvailable = 0,
+          } = await response.json();
 
-        .metric-card {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
+          // Update metrics on the dashboard
+          document.querySelector(".metric-card:nth-child(1) p").textContent =
+            totalApplications;
+          document.querySelector(".metric-card:nth-child(2) p").textContent =
+            jobsApplied;
+          document.querySelector(".metric-card:nth-child(3) p").textContent =
+            jobsAvailable;
+        } catch (error) {
+          console.error("Error fetching dashboard metrics:", error);
+          document.querySelector(".metric-card:nth-child(1) p").textContent =
+            "0";
+          document.querySelector(".metric-card:nth-child(2) p").textContent =
+            "0";
+          document.querySelector(".metric-card:nth-child(3) p").textContent =
+            "0";
         }
+      }
 
-        .job-announcements, .manage-applications {
-            margin: 20px;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .job-card {
-            border-bottom: 1px solid #e0e0e0;
-            padding: 10px 0;
-        }
-
-        .job-card h3 {
-            margin: 0;
-        }
-
-        .view-all {
-            display: block;
-            margin-top: 10px;
-            text-align: right;
-            color: #004aad;
-            text-decoration: none;
-        }
-
-        .view-all:hover {
-            text-decoration: underline;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-
-        th, td {
-            border: 1px solid #e0e0e0;
-            padding: 8px;
-            text-align: left;
-        }
-
-        th {
-            background: #f4f8fb;
-        }
-
-        .status {
-            padding: 5px 10px;
-            border-radius: 5px;
-        }
-
-        .status.pending {
-            background: #ffd700;
-            color: #000;
-        }
-
-        .status.approved {
-            background: #4caf50;
-            color: white;
-        }
-    </style>
-</body>
+      document.addEventListener("DOMContentLoaded", fetchDashboardMetrics);
+    </script>
+  </body>
 </html>

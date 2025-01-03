@@ -40,7 +40,7 @@ app.use("/categories", categoriesRoutes);
 
 // Static File Routes
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "home.html"));
+  res.sendFile(path.join(__dirname, "public", "public", "home.html"));
 });
 
 app.get("/users", (req, res) => {
@@ -89,12 +89,22 @@ app.post("/register", async (req, res) => {
 
 // Announcements Route
 app.post("/api/announcements", async (req, res) => {
-  const { title, description, deadline, contactInfo, userId } = req.body;
+  const {
+    title,
+    description,
+    location,
+    payment,
+    deadline,
+    contactInfo,
+    userId,
+  } = req.body;
 
   try {
     const newAnnouncement = new Announcement({
       title,
       description,
+      location,
+      payment,
       deadline,
       contactInfo,
       userId,
@@ -110,11 +120,6 @@ app.post("/api/announcements", async (req, res) => {
   }
 });
 
-// Start the Server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
 // Fetch all announcements
 app.get("/api/announcements", async (req, res) => {
   try {
@@ -123,4 +128,35 @@ app.get("/api/announcements", async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch announcements" });
   }
+});
+const moment = require("moment");
+
+// Dashboard Metrics Route
+app.get("/api/dashboard", async (req, res) => {
+  try {
+    // Count the total number of announcements
+    const totalApplications = await Announcement.countDocuments();
+
+    // Count the number of jobs available (deadline does not exceed today)
+    const today = moment().startOf("day");
+    const jobsAvailable = await Announcement.countDocuments({
+      deadline: { $gte: today.toDate() },
+    });
+
+    // Return the metrics
+    res.status(200).json({
+      totalApplications,
+      jobsApplied: 8, // Placeholder for "Jobs Applied" (to be implemented later)
+      jobsAvailable,
+    });
+  } catch (error) {
+    console.error("Error fetching dashboard metrics:", error);
+    res.status(500).json({ error: "Failed to fetch dashboard metrics" });
+  }
+});
+
+// Start the Server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });
