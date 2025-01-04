@@ -112,13 +112,18 @@ document.addEventListener("DOMContentLoaded", function () {
       const password = document.getElementById("login-password").value.trim();
       const role = document.querySelector('input[name="role"]:checked').value;
 
+      // Base validation for all users
       if (!name || !email || !password || !role) {
         alert("All fields are required.");
         return;
       }
 
-      const payload = { name, email, password, role };
+      // Create payload for user
+      const payload0 = { name, email, password, role };
 
+      // Handle Craftsman-specific fields if the role is "craftsman"
+      let payload = { ...payload0 }; // Initialize craftsman payload based on user payload
+      
       if (role === "craftsman") {
         const specialization = document
           .getElementById("craftsman-specialization")
@@ -128,21 +133,23 @@ document.addEventListener("DOMContentLoaded", function () {
           .value.trim();
         const bio = document.getElementById("craftsman-bio").value.trim();
 
-        if (!specialization || !experience || !bio) {
-          alert("Please fill out all Craftsman-specific fields.");
-          return;
-        }
+       
 
-        payload.specialization = specialization;
-        payload.experience = experience;
-        payload.bio = bio;
+        // Add craftsman-specific fields to the payload
+        payload = {
+          ...payload0,
+          specialization,
+          experience,
+          bio,
+        };
       }
 
       try {
+        // Send the appropriate payload based on the role
         const response = await fetch("/register", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
+          body: JSON.stringify(payload), // Send either user-only or user + craftsman fields
         });
 
         const data = await response.json();

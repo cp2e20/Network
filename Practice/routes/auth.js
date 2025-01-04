@@ -45,54 +45,65 @@ router.post("/login", async (req, res) => {
 
 // Registration route without password hashing
 router.post("/register", async (req, res) => {
-  const { name, email, password, role, specialization, experience, bio } = req.body;
+  const { name, email, password, role, specialization, experience, bio } =
+    req.body;
 
   try {
     // Validate role
     const allowedRoles = ["user", "craftsman"];
     if (!allowedRoles.includes(role)) {
-      return res.status(400).json({ message: "Invalid role." });
+      return res.status(400).json({ message: "Invalid role specified." });
     }
 
-    // Check if the email already exists
+    // Check if the email already exists in the User table
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({
-        message: "Email already exists. Please use a different email.",
-      });
+      return res.status(400).json({ message: "Email already exists." });
     }
 
-    // Save user data to the User table with plain-text password
-    const user = new User({ name, email, password, role });
-    const savedUser = await user.save();
+    // Create a new user entry for all roles
+    const newUser = new User({ name, email, password, role });
+    const savedUser = await newUser.save();
 
-    // If the role is Craftsman, handle craftsman-specific data
+    // Additional handling for craftsmen
     if (role === "craftsman") {
+      // Validate Craftsman-specific fields
       if (!specialization || !experience || !bio) {
-        return res.status(400).json({ message: "All Craftsman fields are required." });
+        return res
+          .status(400)
+          .json({ message: "All Craftsman-specific fields are required." });
       }
 
-      // Convert experience to integer
+      // Parse experience to integer
       const parsedExperience = parseInt(experience, 10);
       if (isNaN(parsedExperience)) {
-        return res.status(400).json({ message: "Experience must be a valid number." });
+        return res
+          .status(400)
+          .json({ message: "Experience must be a valid number." });
       }
 
+      // Save Craftsman-specific data
       const craftsman = new Craftsman({
-        userId: mongoose.Types.ObjectId(savedUser._id),
+        userId: mongoose.Types.ObjectId(savedUser._id), // Link to the user table
         skill: specialization,
         experience: parsedExperience,
         description: bio,
       });
-
-      // Save the craftsman data
       await craftsman.save();
     }
 
-    res.status(201).json({ message: "Registration successful" });
+    // Respond with success
+    res.status(201).json({
+      message:
+        role === "craftsman"
+          ? "Craftsman registration successful."
+          : "User registration successful.",
+    });
   } catch (error) {
-    console.error("Error during registration:", error.stack || error);
-    res.status(500).json({ message: "Registration failed. Please try again later." });
+    console.error("Error during registration:", error);
+    res
+      .status(500)
+      .json({ message: "Registration failed. Please try again later." });
   }
 });
 
