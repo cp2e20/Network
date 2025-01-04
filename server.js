@@ -58,32 +58,60 @@ app.get("/protected", authenticateToken, (req, res) => {
 
 // User Registration Route
 app.post("/register", async (req, res) => {
-  try {
-    const { name, email, password, role } = req.body;
+  const { name, email, password, role, specialization, experience, bio } =
+    req.body;
 
-    if (!name || !email || !password) {
+  try {
+    // Check if the email already exists in the User table
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
       return res
         .status(400)
-        .send({ error: "Name, email, and password are required." });
+        .json({ message: "Email already exists in User table." });
     }
 
-    const newUser = new User({
-      name,
-      email,
-      password,
-      role, // Optional, defaults to "craftsman"
-    });
-
-    const savedUser = await newUser.save();
-    res.status(201).send(savedUser);
-  } catch (err) {
-    console.error("Error during registration:", err);
-
-    if (err.code === 11000) {
-      return res.status(400).send({ error: "Email already exists." });
+    if (role === "user") {
+      // Save user data to the User table
+      const user = new User({ name, email, password, role });
+      await user.save();
+      return res.status(201).json({ message: "User registration successful." });
     }
 
-    res.status(500).send({ error: "Internal server error." });
+    if (role === "craftsman") {
+      // Validate Craftsman-specific fields
+      if (!specialization || !experience || !bio) {
+        return res
+          .status(400)
+          .json({ message: "All Craftsman-specific fields are required." });
+      }
+
+      // Save Craftsman data to the Craftsman table
+      const craftsman = new Craftsman({
+        name,
+        email,
+        password,
+        skill: specialization,
+        experience: parseInt(experience, 10),
+        description: bio,
+      });
+      await craftsman.save();
+
+      // Save craftsman data to the User table as well
+      const user = new User({ name, email, password, role });
+      await user.save();
+
+      return res
+        .status(201)
+        .json({ message: "Craftsman registration successful." });
+    }
+
+    // If role is invalid
+    return res.status(400).json({ message: "Invalid role specified." });
+  } catch (error) {
+    console.error("Error during registration:", error);
+    res
+      .status(500)
+      .json({ message: "Registration failed. Please try again later." });
   }
 });
 

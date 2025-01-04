@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Toggle visibility of craftsman fields and submit user data
+  // Handle Role Selection for Craftsman and User
   const craftsmanRadio = document.getElementById("craftsman");
   const userRadio = document.getElementById("user");
   const craftsmanFields = document.getElementById("craftsman-fields");
@@ -66,99 +66,73 @@ document.addEventListener("DOMContentLoaded", function () {
   if (craftsmanFields) craftsmanFields.style.display = "none";
 
   if (craftsmanRadio && userRadio) {
-    craftsmanRadio.addEventListener("change", async function () {
+    craftsmanRadio.addEventListener("change", function () {
       craftsmanFields.style.display = "block";
-
-      // Submit user entry to the User table when "Craftsman" is selected
-      const name = document.getElementById("name").value.trim();
-      const email = document.getElementById("login-email").value.trim();
-      const password = document.getElementById("login-password").value.trim();
-
-      if (!name || !email || !password) {
-        alert(
-          "Please fill out Name, Email, and Password before selecting Craftsman."
-        );
-        return;
-      }
-
-      try {
-        const response = await fetch("/register", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            name,
-            email,
-            password,
-            role: "craftsman",
-          }),
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-          alert("User entry created successfully!");
-          console.log(data);
-        } else {
-          alert(data.message || "Error occurred while creating user entry.");
-        }
-      } catch (error) {
-        console.error("Error creating user entry:", error);
-      }
     });
 
     userRadio.addEventListener("change", function () {
       craftsmanFields.style.display = "none";
     });
   }
-  document.getElementById("login-email").addEventListener("blur", async () => {
-    const email = document.getElementById("login-email").value.trim();
 
-    try {
-      const response = await fetch("/check-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
+  // Handle Email Validation
+  const loginEmailInput = document.getElementById("login-email");
+  if (loginEmailInput) {
+    loginEmailInput.addEventListener("blur", async () => {
+      const email = loginEmailInput.value.trim();
 
-      const data = await response.json();
+      try {
+        const response = await fetch("/check-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        });
 
-      if (response.ok) {
-        console.log(data.message);
-      } else {
-        alert(data.message || "This email is already registered.");
+        const data = await response.json();
+
+        if (response.ok) {
+          console.log(data.message);
+        } else {
+          alert(data.message || "This email is already registered.");
+        }
+      } catch (error) {
+        console.error("Error checking email availability:", error);
       }
-    } catch (error) {
-      console.error("Error checking email availability:", error);
-    }
-  });
+    });
+  }
 
-  // Handle Final Registration Form Submission (Complete Craftsman Data)
-  document
-    .getElementById("register-form")
-    .addEventListener("submit", async (e) => {
-      e.preventDefault();
+  // Handle Final Registration Form Submission
+  const registerForm = document.getElementById("register-form");
+  if (registerForm) {
+    registerForm.addEventListener("submit", async function (event) {
+      event.preventDefault();
 
       const name = document.getElementById("name").value.trim();
       const email = document.getElementById("login-email").value.trim();
       const password = document.getElementById("login-password").value.trim();
       const role = document.querySelector('input[name="role"]:checked').value;
 
-      // Additional fields for Craftsman
-      const specialization = document
-        .getElementById("craftsman-specialization")
-        .value.trim();
-      const experience = document
-        .getElementById("craftsman-experience")
-        .value.trim();
-      const bio = document.getElementById("craftsman-bio").value.trim();
+      if (!name || !email || !password || !role) {
+        alert("All fields are required.");
+        return;
+      }
 
-      // Prepare the payload
       const payload = { name, email, password, role };
+
       if (role === "craftsman") {
+        const specialization = document
+          .getElementById("craftsman-specialization")
+          .value.trim();
+        const experience = document
+          .getElementById("craftsman-experience")
+          .value.trim();
+        const bio = document.getElementById("craftsman-bio").value.trim();
+
         if (!specialization || !experience || !bio) {
           alert("Please fill out all Craftsman-specific fields.");
           return;
         }
+
         payload.specialization = specialization;
         payload.experience = experience;
         payload.bio = bio;
@@ -174,13 +148,14 @@ document.addEventListener("DOMContentLoaded", function () {
         const data = await response.json();
 
         if (response.ok) {
-          alert("Registration successful!");
+          alert(data.message);
         } else {
-          alert(data.message || "Error occurred during registration.");
+          alert(data.message || "Registration failed.");
         }
       } catch (error) {
         console.error("Error during registration:", error);
         alert("An unexpected error occurred. Please try again.");
       }
     });
+  }
 });
