@@ -130,13 +130,14 @@
         </div>
       </div>
     </footer>
+
     <script>
       async function fetchAnnouncements() {
         const container = document.getElementById("announcements-container");
-        container.innerHTML = "<p>Loading announcements...</p>"; // Show loading text
+        container.innerHTML = "<p>Loading announcements...</p>";
 
         try {
-          const response = await fetch("/api/announcements"); // Adjust the endpoint if necessary
+          const response = await fetch("/api/announcements"); // Fetch announcements from the backend
           if (!response.ok) throw new Error("Failed to fetch announcements");
 
           const announcements = await response.json();
@@ -146,23 +147,23 @@
             return;
           }
 
-          // Generate announcement cards dynamically
+          // Create announcement cards
           container.innerHTML = announcements
             .map(
               (announcement) => `
-          <div class="announcement-card">
-            <h3>${announcement.title}</h3>
-            <p>${announcement.description}</p>
-            <p><strong>Date Posted:</strong> ${new Date(
-              announcement.createdAt
-            ).toLocaleDateString()}</p>
-            <a href="applicants.html?announcementId=${
-              announcement._id
-            }" class="view-applicants-btn">
-              View Applicants
-            </a>
-          </div>
-        `
+        <div class="announcement-card">
+          <h3>${announcement.title}</h3>
+          <p>${announcement.description}</p>
+          <p><strong>Date Posted:</strong> ${new Date(
+            announcement.createdAt
+          ).toLocaleDateString()}</p>
+          <a href="applicants.html?announcementId=${
+            announcement._id
+          }" class="view-applicants-btn">
+            View Applicants
+          </a>
+        </div>
+      `
             )
             .join("");
         } catch (error) {
@@ -172,7 +173,6 @@
         }
       }
 
-      // Call the function when the page loads
       document.addEventListener("DOMContentLoaded", fetchAnnouncements);
     </script>
   </body>

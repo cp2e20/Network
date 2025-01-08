@@ -183,32 +183,49 @@ app.get("/api/dashboard", async (req, res) => {
   }
 });
 
-
-
 // Apply for Job
-app.post("/api/apply", async (req, res) => {
-  const { jobId, message, craftsmanId } = req.body;
 
-  if (!jobId || !message || !craftsmanId) {
-    return res.status(400).json({ error: "Job ID, message, and craftsman ID are required." });
+app.post("/api/apply", async (req, res) => {
+  const { jobId, message, craftsmanEmail } = req.body;
+
+  // Validate input
+  if (!jobId || !message || !craftsmanEmail) {
+    return res
+      .status(400)
+      .json({ error: "Job ID, message, and craftsman email are required." });
   }
 
   try {
-    const craftsman = await Craftsman.findById(craftsmanId);
-    if (!craftsman) {
-      return res.status(404).json({ error: "Craftsman not found." });
-    }
-
+    // Since the craftsman is logged in, we trust that the email is valid
+    // Directly create the application without checking the database
     const applicant = await Applicant.create({
       announcementId: jobId,
-      craftsmanId,
+      craftsmanEmail, // Save the email directly
       message,
     });
 
-    res.status(201).json({ success: true, message: "Application submitted successfully." });
+    res
+      .status(201)
+      .json({ success: true, message: "Application submitted successfully." });
   } catch (error) {
     console.error("Error applying for job:", error);
     res.status(500).json({ error: "Failed to submit application." });
+  }
+});
+
+app.get("/api/applicants", async (req, res) => {
+  const { announcementId } = req.query;
+
+  if (!announcementId) {
+    return res.status(400).json({ error: "Announcement ID is required." });
+  }
+
+  try {
+    const applicants = await Applicant.find({ announcementId }).lean();
+    res.status(200).json(applicants);
+  } catch (error) {
+    console.error("Error fetching applicants:", error);
+    res.status(500).json({ error: "Failed to fetch applicants." });
   }
 });
 

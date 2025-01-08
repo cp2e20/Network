@@ -247,7 +247,6 @@
         </div>
       </div>
     </footer>
-
     <script>
       async function fetchAnnouncements() {
         const container = document.querySelector(
@@ -269,8 +268,8 @@
           // Dynamically create job cards with full details
           container.innerHTML = announcements
             .map(
-              (announcement) => `
-        <div class="job-card">
+              (announcement) =>
+                `<div class="job-card">
           <h3>${announcement.title}</h3>
           <p><strong>Location:</strong> ${
             announcement.location || "Unknown"
@@ -292,8 +291,7 @@
           <button class="apply-button" onclick="applyForJob('${
             announcement._id
           }')">Apply</button>
-        </div>
-      `
+        </div>`
             )
             .join("");
         } catch (error) {
@@ -303,35 +301,35 @@
       }
 
       function applyForJob(jobId) {
-  const craftsmanId = localStorage.getItem("craftsmanId"); // Retrieve craftsmanId from localStorage
-  const message = prompt("Enter your message for this job application:");
+        const craftsmanEmail = localStorage.getItem("craftsmanEmail"); // Retrieve craftsmanEmail from localStorage
+        const message = prompt("Enter your message for this job application:");
 
-  if (!message || !craftsmanId) {
-    alert("Message and craftsman ID are required.");
-    return;
-  }
+        if (!message || !craftsmanEmail) {
+          alert("Message and craftsman email are required.");
+          return;
+        }
 
-  fetch("/api/apply", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ jobId, message, craftsmanId }),
-  })
-    .then(async (response) => {
-      const data = await response.json();
-      if (response.ok) {
-        alert("Application submitted successfully!");
-      } else {
-        alert(data.error || "Failed to apply for the job.");
+        fetch("/api/apply", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ jobId, message, craftsmanEmail }),
+        })
+          .then(async (response) => {
+            const data = await response.json();
+            if (response.ok) {
+              alert("Application submitted successfully!");
+            } else {
+              alert(data.error || "Failed to apply for the job.");
+            }
+          })
+          .catch((error) => {
+            console.error("Error applying for job:", error);
+            alert("Failed to apply for the job.");
+          });
       }
-    })
-    .catch((error) => {
-      console.error("Error applying for job:", error);
-      alert("Failed to apply for the job.");
-    });
-}
-
 
       document.addEventListener("DOMContentLoaded", fetchAnnouncements);
+
       async function fetchDashboardMetrics() {
         try {
           const response = await fetch("/api/dashboard");

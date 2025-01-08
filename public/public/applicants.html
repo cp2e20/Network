@@ -376,26 +376,12 @@ p {
     </header>
 
     <!-- Applicants Section -->
-    <section class="applicants-section">
-        <h2>Applicants for [Job Title]</h2>
-        <div class="applicants-list">
-            <!-- Example applicant -->
-            <div class="applicant-card">
-                <h3>John Doe</h3>
-                <p>Experience: 5 years</p>
-                <p>Skills: Custom Carpentry, Woodworking</p>
-                <button>View Profile</button>
-            </div>
-            
-            <!-- Repeat for each applicant -->
-            <div class="applicant-card">
-                <h3>Jane Smith</h3>
-                <p>Experience: 3 years</p>
-                <p>Skills: Cabinet Making, Furniture Assembly</p>
-                <button>View Profile</button>
-            </div>
-        </div>
-    </section>
+ <section class="applicants-section">
+  <h2>Applicants for [Job Title]</h2>
+  <div class="applicants-list" id="applicants-list">
+    <p>Loading applicants...</p>
+  </div>
+</section>
 
     <!-- Footer -->
     <footer class="footer">
@@ -432,5 +418,61 @@ p {
         </div>
     </footer>
 
+
+<script>
+  // Extract the announcementId from the URL query parameters
+  const urlParams = new URLSearchParams(window.location.search);
+  const announcementId = urlParams.get("announcementId");
+
+  if (announcementId) {
+    fetchApplicants(announcementId);
+  } else {
+    document.getElementById("applicants-list").innerHTML =
+      "<p>Invalid announcement ID.</p>";
+  }
+
+  async function fetchApplicants(announcementId) {
+    const applicantsList = document.getElementById("applicants-list");
+    applicantsList.innerHTML = "<p>Loading applicants...</p>";
+
+    try {
+      const response = await fetch(
+        `/api/applicants?announcementId=${announcementId}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch applicants.");
+      }
+
+      const applicants = await response.json();
+
+      if (applicants.length === 0) {
+        applicantsList.innerHTML = "<p>No applicants found for this job.</p>";
+        return;
+      }
+
+      applicantsList.innerHTML = applicants
+        .map(
+          (applicant) => `
+            <div class="applicant-card">
+              <h3>${applicant.craftsmanEmail}</h3>
+              <p>Message: ${applicant.message || "No message provided"}</p>
+              <p>Applied on: ${new Date(
+                applicant.createdAt
+              ).toLocaleDateString()}</p>
+              <button onclick="viewProfile('${applicant.craftsmanEmail}')">View Profile</button>
+            </div>`
+        )
+        .join("");
+    } catch (error) {
+      console.error("Error fetching applicants:", error);
+      applicantsList.innerHTML = "<p>Failed to load applicants.</p>";
+    }
+  }
+
+  function viewProfile(craftsmanEmail) {
+    alert(`View profile for ${craftsmanEmail}`);
+    // Redirect to profile page or implement modal logic here
+  }
+</script>
 </body>
 </html>

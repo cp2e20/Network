@@ -4,33 +4,33 @@ document.addEventListener("DOMContentLoaded", function () {
   if (loginForm) {
     loginForm.addEventListener("submit", async function (event) {
       event.preventDefault();
-    
+
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value.trim();
-    
+
       if (!email || !password) {
         alert("Please fill in both email and password.");
         return;
       }
-    
+
       try {
         const response = await fetch("/auth/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password }),
         });
-    
+
         const data = await response.json();
-    
+
         if (response.ok) {
-          localStorage.setItem("craftsmanId", data.userId); // Save craftsmanId in localStorage
-      alert("Login successful!");
-          
-    if (data.role === "craftsman") {
-      window.location.href = "./public/Cdashboard.html";
-    } else {
-      window.location.href = "./public/dashboard.html";
-    }
+          localStorage.setItem("craftsmanEmail", email); // Save email as craftsmanEmail
+          alert("Login successful!");
+
+          if (data.role === "craftsman") {
+            window.location.href = "./public/Cdashboard.html";
+          } else {
+            window.location.href = "./public/dashboard.html";
+          }
         } else {
           alert(data.message || "Login failed.");
         }
@@ -39,7 +39,6 @@ document.addEventListener("DOMContentLoaded", function () {
         alert("An error occurred during login.");
       }
     });
-    
   }
 
   // Toggle Sign In / Sign Up
@@ -124,7 +123,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Handle Craftsman-specific fields if the role is "craftsman"
       let payload = { ...payload0 }; // Initialize craftsman payload based on user payload
-      
+
       if (role === "craftsman") {
         const specialization = document
           .getElementById("craftsman-specialization")
@@ -133,8 +132,6 @@ document.addEventListener("DOMContentLoaded", function () {
           .getElementById("craftsman-experience")
           .value.trim();
         const bio = document.getElementById("craftsman-bio").value.trim();
-
-       
 
         // Add craftsman-specific fields to the payload
         payload = {
