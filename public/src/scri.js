@@ -4,41 +4,42 @@ document.addEventListener("DOMContentLoaded", function () {
   if (loginForm) {
     loginForm.addEventListener("submit", async function (event) {
       event.preventDefault();
-
+    
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value.trim();
-
+    
       if (!email || !password) {
         alert("Please fill in both email and password.");
         return;
       }
-
+    
       try {
         const response = await fetch("/auth/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password }),
         });
-
+    
         const data = await response.json();
-
+    
         if (response.ok) {
-          alert(data.message);
-
-          // Redirect based on role
-          if (data.role === "craftsman") {
-            window.location.href = "./public/Cdashboard.html";
-          } else {
-            window.location.href = "./public/dashboard.html";
-          }
+          localStorage.setItem("craftsmanId", data.userId); // Save craftsmanId in localStorage
+      alert("Login successful!");
+          
+    if (data.role === "craftsman") {
+      window.location.href = "./public/Cdashboard.html";
+    } else {
+      window.location.href = "./public/dashboard.html";
+    }
         } else {
           alert(data.message || "Login failed.");
         }
       } catch (error) {
         console.error("Error during login:", error);
-        alert("An error occurred during login. Please try again.");
+        alert("An error occurred during login.");
       }
     });
+    
   }
 
   // Toggle Sign In / Sign Up

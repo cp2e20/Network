@@ -183,6 +183,35 @@ app.get("/api/dashboard", async (req, res) => {
   }
 });
 
+
+
+// Apply for Job
+app.post("/api/apply", async (req, res) => {
+  const { jobId, message, craftsmanId } = req.body;
+
+  if (!jobId || !message || !craftsmanId) {
+    return res.status(400).json({ error: "Job ID, message, and craftsman ID are required." });
+  }
+
+  try {
+    const craftsman = await Craftsman.findById(craftsmanId);
+    if (!craftsman) {
+      return res.status(404).json({ error: "Craftsman not found." });
+    }
+
+    const applicant = await Applicant.create({
+      announcementId: jobId,
+      craftsmanId,
+      message,
+    });
+
+    res.status(201).json({ success: true, message: "Application submitted successfully." });
+  } catch (error) {
+    console.error("Error applying for job:", error);
+    res.status(500).json({ error: "Failed to submit application." });
+  }
+});
+
 // Start the Server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

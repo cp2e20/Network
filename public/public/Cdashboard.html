@@ -303,9 +303,33 @@
       }
 
       function applyForJob(jobId) {
-        // Handle job application logic here
-        alert(`Applied for job with ID: ${jobId}`);
+  const craftsmanId = localStorage.getItem("craftsmanId"); // Retrieve craftsmanId from localStorage
+  const message = prompt("Enter your message for this job application:");
+
+  if (!message || !craftsmanId) {
+    alert("Message and craftsman ID are required.");
+    return;
+  }
+
+  fetch("/api/apply", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ jobId, message, craftsmanId }),
+  })
+    .then(async (response) => {
+      const data = await response.json();
+      if (response.ok) {
+        alert("Application submitted successfully!");
+      } else {
+        alert(data.error || "Failed to apply for the job.");
       }
+    })
+    .catch((error) => {
+      console.error("Error applying for job:", error);
+      alert("Failed to apply for the job.");
+    });
+}
+
 
       document.addEventListener("DOMContentLoaded", fetchAnnouncements);
       async function fetchDashboardMetrics() {
