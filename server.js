@@ -229,6 +229,17 @@ app.get("/api/applicants", async (req, res) => {
   }
 });
 
+app.get("/api/craftsmen/:specialization", async (req, res) => {
+  const { specialization } = req.params;
+  try {
+    const craftsmen = await Craftsman.find({ skill: specialization });
+    res.json(craftsmen);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server error");
+  }
+});
+
 // Start the Server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

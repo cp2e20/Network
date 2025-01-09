@@ -12,7 +12,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const craftsmen = await response.json();
 
     if (craftsmen.length === 0) {
-      craftsmenListElement.innerHTML = "<p>No craftsmen found in this category.</p>";
+      craftsmenListElement.innerHTML =
+        "<p>No craftsmen found in this category.</p>";
       return;
     }
 
@@ -20,16 +21,23 @@ document.addEventListener("DOMContentLoaded", async () => {
       .map(
         (craftsman) => `
           <div class="craftsman-card">
-            <h3>${craftsman.userId.name}</h3>
-            <p><strong>Experience:</strong> ${craftsman.experience} years</p>
-            <p><strong>Rating:</strong> ${craftsman.rating}/5</p>
-            <p>${craftsman.description}</p>
+            <h3>${craftsman.name}</h3>
+              <p><strong>Skill:</strong> ${craftsman.skill || "N/A"}</p>
+          <p><strong>Experience:</strong> ${
+            craftsman.experience || "N/A"
+          } years</p>
+          <p><strong>Description:</strong> ${
+            craftsman.description || "No description available."
+          }</p>
+           <p><strong>:Email</strong> ${craftsman.email || "N/A"}</p>
+
           </div>
         `
       )
       .join("");
   } catch (error) {
-    craftsmenListElement.innerHTML = "<p>Error loading craftsmen. Please try again later.</p>";
+    craftsmenListElement.innerHTML =
+      "<p>Error loading craftsmen. Please try again later.</p>";
     console.error("Error fetching craftsmen:", error);
   }
 });

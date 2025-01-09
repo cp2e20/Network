@@ -141,6 +141,7 @@ document.addEventListener("DOMContentLoaded", function () {
           bio,
         };
       }
+      console.log("Payload being sent:", payload); // Debugging
 
       try {
         // Send the appropriate payload based on the role

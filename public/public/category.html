@@ -60,5 +60,55 @@
         </div>
     </div>
 </footer>
+<script>
+   // category.js
+document.addEventListener("DOMContentLoaded", () => {
+  const craftsmenList = document.getElementById("craftsmen-list");
+
+  // Get specialization from URL query parameters
+  const urlParams = new URLSearchParams(window.location.search);
+  const specialization = urlParams.get("category");
+
+  if (!specialization) {
+    craftsmenList.innerHTML = "<p>No category selected.</p>";
+    return;
+  }
+
+  // Fetch craftsmen based on specialization
+  fetch(`/api/craftsmen/${specialization}`)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      if (data.length === 0) {
+        craftsmenList.innerHTML = `<p>No craftsmen found for ${specialization}.</p>`;
+        return;
+      }
+
+      // Render craftsmen data
+      data.forEach((craftsman) => {
+        const craftsmanCard = document.createElement("div");
+        craftsmanCard.className = "craftsman-card";
+
+        craftsmanCard.innerHTML = `
+          <h3>${craftsman.name}</h3>
+          <p><strong>Skill:</strong> ${craftsman.skill || "N/A"}</p>
+          <p><strong>Experience:</strong> ${craftsman.experience || "N/A"} years</p>
+          <p><strong>Description:</strong> ${craftsman.description || "No description available."}</p>
+        `;
+
+        craftsmenList.appendChild(craftsmanCard);
+      });
+    })
+    .catch((error) => {
+      console.error("Error fetching craftsmen data:", error);
+      craftsmenList.innerHTML = "<p>Failed to load craftsmen data. Please try again later.</p>";
+    });
+});
+
+</script>
 </body>
 </html>
