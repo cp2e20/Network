@@ -33,62 +33,40 @@
     <!-- Profile Overview -->
     <section class="profile-overview">
       <div class="profile-header">
-        <h2>Craftsman Profile: [Craftsman Name]</h2>
+        <h2>Craftsman Profile: <span id="craftsman-name">Loading...</span></h2>
         <div class="profile-picture">
-          <img src="profile_picture.jpg" alt="Craftsman Profile Picture" />
+          <img
+            id="craftsman-picture"
+            src="default_picture.jpg"
+            alt="Craftsman Profile Picture"
+          />
         </div>
       </div>
 
       <div class="profile-details">
         <h3>Personal Information</h3>
-        <p><strong>Name:</strong> [Craftsman Name]</p>
-        <p><strong>Email:</strong> [Craftsman Email]</p>
-        <p><strong>Phone:</strong> [Craftsman Phone]</p>
-        <p><strong>Location:</strong> [Craftsman Location]</p>
+        <p>
+          <strong>Name:</strong>
+          <span id="craftsman-name-detail">Loading...</span>
+        </p>
+        <p>
+          <strong>Email:</strong> <span id="craftsman-email">Loading...</span>
+        </p>
+        <p>
+          <strong>Description:</strong>
+          <span id="craftsman-description">Loading...</span>
+        </p>
       </div>
 
       <div class="profile-skills">
         <h3>Skills & Experience</h3>
-        <ul>
-          <li>Woodworking</li>
-          <li>Metal Welding</li>
-          <li>Tailoring</li>
-          <li>Electrical Repairs</li>
-        </ul>
-      </div>
-
-      <div class="profile-experience">
-        <h3>Work Experience</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>Job Title</th>
-              <th>Location</th>
-              <th>Duration</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Furniture Repair</td>
-              <td>Beirut</td>
-              <td>2023-2024</td>
-            </tr>
-            <tr>
-              <td>Tailoring Custom Suits</td>
-              <td>Tripoli</td>
-              <td>2022-2023</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="profile-actions">
-        <button onclick="window.location.href='edit_profile.html'">
-          Edit Profile
-        </button>
-        <button onclick="window.location.href='upload_work.html'">
-          Upload New Work
-        </button>
+        <p>
+          <strong>Skill:</strong> <span id="craftsman-skill">Loading...</span>
+        </p>
+        <p>
+          <strong>Experience:</strong>
+          <span id="craftsman-experience">Loading...</span> years
+        </p>
       </div>
     </section>
 
@@ -127,112 +105,47 @@
       </div>
     </footer>
 
-    <!-- Internal Styling -->
-    <style>
-      body {
-        font-family: "Roboto", sans-serif;
-        background: #f4f8fb;
-        margin: 0;
-        padding: 0;
-      }
+    <script>
+      document.addEventListener("DOMContentLoaded", async () => {
+        const craftsmanEmail = localStorage.getItem("craftsmanEmail");
+        console.log("Retrieved email from localStorage:", craftsmanEmail); // Debug log
 
-      .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background: #004aad;
-        padding: 15px 20px;
-        color: white;
-      }
+        if (!craftsmanEmail) {
+          alert("Craftsman email not found. Please log in again.");
+          window.location.href = "login.html";
+          return;
+        }
 
-      .header .logo {
-        font-size: 1.5rem;
-        font-weight: bold;
-      }
+        try {
+          const response = await fetch("/api/craftsman", {
+            method: "POST", // Use POST instead of GET
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: craftsmanEmail }), // Send email in the body
+          });
 
-      .nav-links a {
-        color: white;
-        margin: 0 10px;
-        text-decoration: none;
-        font-size: 1rem;
-      }
+          if (!response.ok) {
+            throw new Error("Failed to fetch craftsman data");
+          }
 
-      .nav-links a:hover {
-        text-decoration: underline;
-      }
+          const craftsman = await response.json();
+          console.log("Craftsman data retrieved:", craftsman); // Debug log
 
-      .user-actions {
-        display: flex;
-        align-items: center;
-      }
-
-      .profile-overview {
-        margin: 20px;
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      }
-
-      .profile-header {
-        display: flex;
-        align-items: center;
-      }
-
-      .profile-header h2 {
-        margin-right: 20px;
-      }
-
-      .profile-picture img {
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
-      }
-
-      .profile-details,
-      .profile-skills,
-      .profile-experience {
-        margin-top: 20px;
-      }
-
-      .profile-skills ul {
-        list-style-type: disc;
-        margin-left: 20px;
-      }
-
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 10px;
-      }
-
-      th,
-      td {
-        border: 1px solid #e0e0e0;
-        padding: 8px;
-        text-align: left;
-      }
-
-      th {
-        background: #f4f8fb;
-      }
-
-      .profile-actions {
-        margin-top: 20px;
-      }
-
-      .profile-actions button {
-        padding: 10px 20px;
-        background: #004aad;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-      }
-
-      .profile-actions button:hover {
-        background: #003f8c;
-      }
-    </style>
+          // Update the DOM with the available data
+          document.getElementById("craftsman-name").textContent =
+            craftsman.name;
+          document.getElementById("craftsman-email").textContent =
+            craftsman.email;
+          document.getElementById("craftsman-description").textContent =
+            craftsman.description || "No description provided.";
+          document.getElementById("craftsman-skill").textContent =
+            craftsman.skill || "No skill provided.";
+          document.getElementById("craftsman-experience").textContent =
+            craftsman.experience || "0";
+        } catch (error) {
+          console.error("Error fetching craftsman data:", error);
+          alert("Failed to load craftsman profile. Please try again later.");
+        }
+      });
+    </script>
   </body>
 </html>

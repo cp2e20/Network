@@ -34,30 +34,13 @@
         <thead>
           <tr>
             <th>Job Title</th>
-            <th>Status</th>
+            <th>My message</th>
             <th>Applied On</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Furniture Repair</td>
-            <td><span class="status pending">Pending</span></td>
-            <td>2024-12-28</td>
-            <td>
-              <button class="action-btn view">View</button>
-              <button class="action-btn cancel">Cancel</button>
-            </td>
-          </tr>
-          <tr>
-            <td>Tailoring Custom Suits</td>
-            <td><span class="status approved">Approved</span></td>
-            <td>2024-12-25</td>
-            <td>
-              <button class="action-btn view">View</button>
-            </td>
-          </tr>
-          <!-- Add more rows as needed -->
+          <!-- Dynamic rows will be inserted here -->
         </tbody>
       </table>
     </section>
@@ -213,8 +196,100 @@
         background: #4caf50;
         color: white;
       }
+      .action-btn.cancel {
+        background-color: #ff4d4d; /* Red background */
+        color: white; /* White text */
+        border: none; /* No border */
+        padding: 8px 16px; /* Padding for a balanced size */
+        border-radius: 5px; /* Rounded corners */
+        cursor: pointer; /* Pointer cursor on hover */
+        font-size: 14px; /* Font size */
+        transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effects */
+      }
+
+      .action-btn.cancel:hover {
+        background-color: #e60000; /* Darker red on hover */
+        transform: scale(1.05); /* Slight zoom effect on hover */
+      }
+
+      .action-btn.cancel:active {
+        background-color: #cc0000; /* Even darker red on click */
+        transform: scale(1); /* Reset zoom effect on click */
+      }
     </style>
+    <script>
+      document.addEventListener("DOMContentLoaded", async () => {
+        const craftsmanEmail = localStorage.getItem("craftsmanEmail");
+
+        if (!craftsmanEmail) {
+          alert("You must be logged in to view applications.");
+          window.location.href = "login.html";
+          return;
+        }
+
+        try {
+          const response = await fetch(`/applications?email=${craftsmanEmail}`);
+          const data = await response.json();
+
+          if (response.ok) {
+            displayApplications(data.applications);
+          } else {
+            console.error(data.error);
+            alert("Failed to load applications.");
+          }
+        } catch (error) {
+          console.error("Error fetching applications:", error);
+          alert("An error occurred while fetching applications.");
+        }
+      });
+
+      function displayApplications(applications) {
+        const tableBody = document.querySelector("tbody");
+        tableBody.innerHTML = "";
+
+        applications.forEach((app) => {
+          const { _id, announcementId, message, createdAt } = app;
+
+          const row = document.createElement("tr");
+          row.innerHTML = `
+      <td>${announcementId.title}</td>
+      <td>${message || "N/A"}</td>
+      <td>${new Date(createdAt).toLocaleDateString()}</td>
+      <td>
+        <button class="action-btn cancel" data-id="${_id}">Cancel</button>
+      </td>
+    `;
+          tableBody.appendChild(row);
+        });
+
+        document.querySelectorAll(".action-btn.cancel").forEach((button) => {
+          button.addEventListener("click", handleCancelApplication);
+        });
+      }
+
+      function handleCancelApplication(event) {
+        const applicationId = event.target.getAttribute("data-id");
+
+        if (confirm("Are you sure you want to cancel this application?")) {
+          fetch(`/api/applicants/${applicationId}`, { method: "DELETE" })
+            .then((response) => response.json())
+            .then((data) => {
+              if (response.ok) {
+                alert(data.message);
+
+                // Remove the row from the table
+                const row = event.target.closest("tr");
+                row.parentNode.removeChild(row);
+              } else {
+                alert(data.error || "Failed to cancel application.");
+              }
+            })
+            .catch((error) => {
+              console.error("Error canceling application:", error);
+              alert("An error occurred while canceling the application.");
+            });
+        }
+      }
+    </script>
   </body>
 </html>
-
-Cprofile

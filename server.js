@@ -228,6 +228,25 @@ app.get("/api/applicants", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch applicants." });
   }
 });
+app.get("/api/craftsman", async (req, res) => {
+  const { email } = req.query; // Retrieve email from query parameters
+  console.log("Email received in backend:", email); // Debug log
+
+  if (!email) {
+    return res.status(400).json({ error: "Email is required." });
+  }
+
+  try {
+    const craftsman = await Craftsman.findOne({ email }).lean(); // Use lean() for plain JS object
+    if (!craftsman) {
+      return res.status(404).json({ error: "Craftsman not found." });
+    }
+    res.status(200).json(craftsman);
+  } catch (err) {
+    console.error("Error fetching craftsman:", err);
+    res.status(500).json({ error: "Failed to fetch craftsman." });
+  }
+});
 
 app.get("/api/craftsmen/:specialization", async (req, res) => {
   const { specialization } = req.params;
@@ -237,6 +256,87 @@ app.get("/api/craftsmen/:specialization", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).send("Server error");
+  }
+});
+app.get("/api/craftsman/:id", async (req, res) => {
+  const { id } = req.params; // Replace with email if using email as identifier
+  try {
+    const craftsman = await Craftsman.findById(id); // Or use findOne({ email: id })
+    if (!craftsman) {
+      return res.status(404).json({ message: "Craftsman not found" });
+    }
+    res.json(craftsman);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+app.delete("/api/announcements/:id", async (req, res) => {
+  const { id } = req.params;
+  console.log(`Received ID for deletion: ${id}`);
+
+  // Validate ID format
+  const mongoose = require("mongoose");
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ error: "Invalid announcement ID" });
+  }
+
+  try {
+    const result = await Announcement.findByIdAndDelete(id);
+    if (!result) {
+      console.log("Announcement not found");
+      return res.status(404).json({ error: "Announcement not found" });
+    }
+    console.log("Deleted Announcement:", result);
+    res.status(200).json({ message: "Announcement deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting announcement:", error);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+// Endpoint to fetch applications for the logged-in craftsman
+app.get("/applications", async (req, res) => {
+  const craftsmanEmail = req.query.email; // Email from client query
+  if (!craftsmanEmail) {
+    return res.status(400).json({ error: "Craftsman email is required." });
+  }
+
+  try {
+    // Find applications for the craftsman and populate related announcements
+    const applications = await Applicant.find({ craftsmanEmail })
+      .populate("announcementId", "title deadline contactInfo")
+      .exec();
+
+    res.json({ applications });
+  } catch (error) {
+    console.error("Error fetching applications:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while fetching applications." });
+  }
+});
+
+// Endpoint to cancel an application
+app.delete("/api/applicants/:id", async (req, res) => {
+  const { id } = req.params;
+
+  // Validate ID format
+  const mongoose = require("mongoose");
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ error: "Invalid applicant ID" });
+  }
+
+  try {
+    const result = await Applicant.findByIdAndDelete(id);
+    if (!result) {
+      console.log("Applicant not found");
+      return res.status(404).json({ error: "Applicant not found" });
+    }
+    console.log("Deleted Applicant:", result);
+    res.status(200).json({ message: "Applicant deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting applicant:", error);
+    res.status(500).json({ error: "Server error" });
   }
 });
 
