@@ -176,7 +176,8 @@
           <span class="notification-badge">3</span>
         </span>
         <div class="profile-icon">C</div>
-        <a href="#" class="logout-link">Logout</a>
+        
+        <a href="home.html" class="logout-link">Logout</a>
       </div>
     </header>
 
@@ -331,34 +332,55 @@
       document.addEventListener("DOMContentLoaded", fetchAnnouncements);
 
       async function fetchDashboardMetrics() {
-        try {
-          const response = await fetch("/api/dashboard");
-          if (!response.ok)
-            throw new Error("Failed to fetch dashboard metrics");
+  const craftsmanEmail = localStorage.getItem("craftsmanEmail");
 
-          const {
-            totalApplications = 0,
-            jobsApplied = 0,
-            jobsAvailable = 0,
-          } = await response.json();
+  if (!craftsmanEmail) {
+    alert("You must be logged in to view dashboard metrics.");
+    window.location.href = "login.html";
+    return;
+  }
 
-          // Update metrics on the dashboard
-          document.querySelector(".metric-card:nth-child(1) p").textContent =
-            totalApplications;
-          document.querySelector(".metric-card:nth-child(2) p").textContent =
-            jobsApplied;
-          document.querySelector(".metric-card:nth-child(3) p").textContent =
-            jobsAvailable;
-        } catch (error) {
-          console.error("Error fetching dashboard metrics:", error);
-          document.querySelector(".metric-card:nth-child(1) p").textContent =
-            "0";
-          document.querySelector(".metric-card:nth-child(2) p").textContent =
-            "0";
-          document.querySelector(".metric-card:nth-child(3) p").textContent =
-            "0";
-        }
-      }
+  try {
+    // Fetch all metrics including jobs applied
+    const [dashboardResponse, jobsAppliedResponse] = await Promise.all([
+      fetch("/api/dashboard"),
+      fetch(`/api/dashboard/jobs-applied?email=${craftsmanEmail}`),
+    ]);
+
+    if (!dashboardResponse.ok || !jobsAppliedResponse.ok) {
+      throw new Error("Failed to fetch dashboard metrics");
+    }
+
+    const { totalApplications = 0, jobsAvailable = 0 } = await dashboardResponse.json();
+    const { jobsApplied = 0 } = await jobsAppliedResponse.json();
+
+    // Update metrics on the Cdashborad page
+    document.querySelector(".metric-card:nth-child(1) p").textContent = totalApplications;
+    document.querySelector(".metric-card:nth-child(2) p").textContent = jobsApplied;
+    document.querySelector(".metric-card:nth-child(3) p").textContent = jobsAvailable;
+  } catch (error) {
+    console.error("Error fetching Cdashborad metrics:", error);
+
+    // Set default values in case of error
+    document.querySelector(".metric-card:nth-child(1) p").textContent = "0";
+    document.querySelector(".metric-card:nth-child(2) p").textContent = "0";
+    document.querySelector(".metric-card:nth-child(3) p").textContent = "0";
+  }
+}
+
+//logout 
+document.querySelector(".logout-link").addEventListener("click", (e) => {
+  e.preventDefault();
+
+  // Clear stored session data
+  localStorage.removeItem("craftsmanEmail");
+  localStorage.removeItem("authToken");
+
+  // Redirect to login page
+  
+  window.location.href = "home.html";
+});
+
 
       document.addEventListener("DOMContentLoaded", fetchDashboardMetrics);
     </script>

@@ -21,7 +21,10 @@
             <span class="notifications-icon">🔔</span>
             <span class="profile-icon">A</span>
             <span class="language-toggle">EN</span>
+
         </div>
+        
+        <a href="home.html" class="logout-link">Logout</a>
     </header>
 
     <!-- Banner Section -->
@@ -176,28 +179,44 @@
 });
  // Search functionality
     document.getElementById("searchButton").addEventListener("click", () => {
-        const searchValue = document.getElementById("searchInput").value.toLowerCase();
-        const categoryCards = document.querySelectorAll(".category-card");
+    const searchValue = document.getElementById("searchInput").value.toLowerCase();
+    const categoryCards = document.querySelectorAll(".category-card");
 
-        categoryCards.forEach(card => {
-            const categoryName = card.querySelector("h3").textContent.toLowerCase();
-            if (categoryName.includes(searchValue)) {
-                card.style.display = "block";
-            } else {
-                card.style.display = "none";
-            }
-        });
+    categoryCards.forEach(card => {
+        const categoryName = card.querySelector("h3").textContent.toLowerCase();
+        if (categoryName.includes(searchValue)) {
+            card.style.display = "block";
+        } else {
+            card.style.display = "none";
+        }
     });
+});
+
 
     // Optional: Reset search when input is cleared
     document.getElementById("searchInput").addEventListener("input", () => {
-        if (document.getElementById("searchInput").value === "") {
-            const categoryCards = document.querySelectorAll(".category-card");
-            categoryCards.forEach(card => {
-                card.style.display = "block";
-            });
-        }
-    });
+    if (document.getElementById("searchInput").value === "") {
+        const categoryCards = document.querySelectorAll(".category-card");
+        categoryCards.forEach(card => {
+            card.style.display = "block";
+        });
+    }
+});
+//logout 
+document.querySelector(".logout-link").addEventListener("click", (e) => {
+  e.preventDefault();
+
+  // Clear stored session data
+  localStorage.removeItem("craftsmanEmail");
+  localStorage.removeItem("authToken");
+
+  // Redirect to login page
+  
+  window.location.href = "home.html";
+});
+
+
+
     </script>
 </body>
 </html>

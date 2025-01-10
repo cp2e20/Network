@@ -13,6 +13,8 @@ const User = require("./Practice/models/User");
 const Craftsman = require("./Practice/models/Craftsman");
 const Announcement = require("./Practice/models/Announcement");
 const Applicant = require("./Practice/models/Applicant");
+
+const applicationRoutes = require("./Practice/routes/applications");
 const authRoutes = require("./Practice/routes/auth");
 const categoriesRoutes = require("./Practice/routes/categories");
 const authenticateToken = require("./Practice/middleware/authMiddleware");
@@ -23,6 +25,7 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
+// Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, "public")));
 
 // MongoDB Connection
@@ -44,13 +47,17 @@ app.get("/", (req, res) => {
 });
 
 app.get("/users", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "users.html"));
+  res.sendFile(path.join(__dirname, "public", "public","users.html"));
 });
 
 app.get("/dashboard", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "dashboard.html"));
+  res.sendFile(path.join(__dirname,"public", "public","dashboard.html"));
 });
 
+// Ensure craftsman dashboard is routed
+app.get("/Cdashborad", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "public","Cdashborad.html"));
+});
 // Protected Route Example
 app.get("/protected", authenticateToken, (req, res) => {
   res.json({ message: `Welcome, user with ID: ${req.user.id}` });
@@ -377,6 +384,30 @@ app.get("/craftsmen/count", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch counts" });
   }
 });
+
+
+
+// Routes
+app.use("/api/applications", applicationRoutes);
+
+
+//job applied for craftmen;
+app.get("/api/dashboard/jobs-applied", async (req, res) => {
+  const { email } = req.query;
+
+  if (!email) {
+    return res.status(400).json({ error: "Craftsman email is required." });
+  }
+
+  try {
+    const jobsApplied = await Applicant.countDocuments({ craftsmanEmail: email });
+    res.status(200).json({ jobsApplied });
+  } catch (error) {
+    console.error("Error fetching jobs applied count:", error);
+    res.status(500).json({ error: "Failed to fetch jobs applied count." });
+  }
+});
+
 
 // Start the Server
 const PORT = process.env.PORT || 3000;
