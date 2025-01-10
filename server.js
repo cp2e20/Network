@@ -339,6 +339,44 @@ app.delete("/api/applicants/:id", async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
+// Get the count of craftsmen for each specialization
+app.get("/craftsmen/count", async (req, res) => {
+  try {
+    const specializations = [
+      "Carpenter",
+      "Blacksmith",
+      "Tailor",
+      "Painter",
+      "Plumber",
+      "Electrician",
+      "Stonemason",
+      "Glassblower",
+      "Shoemaker",
+      "Jeweler",
+      "Potter",
+      "Leatherworker",
+      "Welder",
+      "Cabinetmaker",
+      "Engraver",
+      "Weaver",
+      "Metalworker",
+      "Stone Carver",
+      "Bookbinder",
+      "Calligrapher",
+    ];
+
+    const counts = await Promise.all(
+      specializations.map(async (specialization) => {
+        const count = await Craftsman.countDocuments({ skill: specialization });
+        return { specialization, count };
+      })
+    );
+
+    res.json(counts);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch counts" });
+  }
+});
 
 // Start the Server
 const PORT = process.env.PORT || 3000;

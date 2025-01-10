@@ -29,10 +29,9 @@
         <h1>Find the Perfect Craftsman for Your Project</h1>
         <p>Connect with skilled craftsmen and small businesses to bring your vision to life, whether it's carpentry, metalwork, tailoring, and more.</p>
         <div class="search-bar">
-            <input type="text" placeholder="Search for craftsmen or services">
-           
-            <button>Search</button>
-        </div>
+    <input id="searchInput" type="text" placeholder="Search for craftsmen or services">
+    <button id="searchButton">Search</button>
+</div>
     </section>
 
     <!-- Craftsmen Categories -->
@@ -107,7 +106,7 @@
             <h3>Metalworker</h3>
             <p>13 Craftsmen Available</p>
         </div>
-        <div class="category-card" onclick="window.location.href='category.html?category=Stonecarver'">
+        <div class="category-card" onclick="window.location.href='category.html?category=Stone Carver'">
             <h3>Stone Carver</h3>
             <p>7 Craftsmen Available</p>
         </div>
@@ -156,5 +155,49 @@
             </div>
         </div>
     </footer>
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    const response = await fetch("/craftsmen/count"); // Adjust the endpoint if needed
+    const counts = await response.json();
+
+    counts.forEach(({ specialization, count }) => {
+      const categoryCard = document.querySelector(
+        `.category-card[onclick*="category=${specialization}"]`
+      );
+      if (categoryCard) {
+        const countElement = categoryCard.querySelector("p");
+        countElement.textContent = `${count} Craftsmen Available`;
+      }
+    });
+  } catch (error) {
+    console.error("Failed to fetch craftsmen counts:", error);
+  }
+});
+ // Search functionality
+    document.getElementById("searchButton").addEventListener("click", () => {
+        const searchValue = document.getElementById("searchInput").value.toLowerCase();
+        const categoryCards = document.querySelectorAll(".category-card");
+
+        categoryCards.forEach(card => {
+            const categoryName = card.querySelector("h3").textContent.toLowerCase();
+            if (categoryName.includes(searchValue)) {
+                card.style.display = "block";
+            } else {
+                card.style.display = "none";
+            }
+        });
+    });
+
+    // Optional: Reset search when input is cleared
+    document.getElementById("searchInput").addEventListener("input", () => {
+        if (document.getElementById("searchInput").value === "") {
+            const categoryCards = document.querySelectorAll(".category-card");
+            categoryCards.forEach(card => {
+                card.style.display = "block";
+            });
+        }
+    });
+    </script>
 </body>
 </html>
