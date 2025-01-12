@@ -1,0 +1,260 @@
+/* ---------- CSS Variables ---------- */
+:root {
+  --primary-color: #ffffff;
+  --secondary-color: #f4f8fb;
+  --hover-color: #0056b3;
+  --danger-color: #ff4d4d;
+  --success-color: #4caf50;
+  --border-color: #e0e0e0;
+  --font-family: "Roboto", sans-serif;
+  --font-size-base: 1rem;
+  --font-size-large: 1.5rem;
+  --spacing-xs: 8px;
+  --spacing-sm: 12px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --border-radius: 5px;
+  --box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  --transition-speed: 0.3s;
+  --header-footer-color: #004aad;
+  --body-gradient: linear-gradient(135deg, #e0f7fa, #f4f8fb);
+}
+
+/* ---------- Basic Reset ---------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-family);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--body-gradient);
+  margin: 0;
+  padding: 0;
+  color: var(--header-footer-color);
+  line-height: 1.6;
+}
+
+a:focus,
+button:focus {
+  outline: 2px solid var(--hover-color);
+  outline-offset: 2px;
+}
+
+/* ---------- Header ---------- */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--primary-color);
+  padding: var(--spacing-sm) var(--spacing-md);
+  color: var(--header-footer-color);
+  border-bottom: 2px solid var(--header-footer-color);
+}
+
+.header .logo {
+  font-size: var(--font-size-large);
+  font-weight: bold;
+  color: var(--header-footer-color);
+}
+
+.nav-links a {
+  color: var(--header-footer-color);
+  margin: 0 var(--spacing-xs);
+  text-decoration: none;
+  font-size: var(--font-size-base);
+}
+
+.nav-links a:hover {
+  text-decoration: underline;
+}
+
+.user-actions {
+  display: flex;
+  align-items: center;
+}
+
+/* logout */
+.logout-link {
+  color: var(--header-footer-color);
+  text-decoration: none;
+  font-size: var(--font-size-base);
+  margin-left: var(--spacing-sm);
+}
+
+.logout-link:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Dashboard Overview ---------- */
+.dashboard-overview {
+  margin: var(--spacing-lg);
+  text-align: center;
+}
+
+.dashboard-metrics {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-md);
+}
+
+.metric-card {
+  background: white;
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  text-align: center;
+}
+
+/* ---------- Job Announcements and Applications ---------- */
+.job-announcements,
+.manage-applications {
+  margin: var(--spacing-lg);
+  background: white;
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.job-card {
+  border-bottom: 1px solid var(--border-color);
+  padding: var(--spacing-sm) 0;
+}
+
+.job-card h3 {
+  margin: 0;
+}
+
+.view-all {
+  display: block;
+  margin-top: var(--spacing-xs);
+  text-align: right;
+  color: var(--header-footer-color);
+  text-decoration: none;
+}
+
+.view-all:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Table Styling ---------- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: var(--spacing-sm);
+}
+
+th,
+td {
+  border: 1px solid var(--border-color);
+  padding: var(--spacing-sm);
+  text-align: left;
+}
+
+th {
+  background: var(--secondary-color);
+}
+
+tr:hover {
+  background-color: var(--secondary-color);
+}
+
+/* ---------- Status Badges ---------- */
+.status {
+  padding: var(--spacing-xs);
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-base);
+}
+
+.status.pending {
+  background: #ffd700;
+  color: black;
+}
+
+.status.approved {
+  background: var(--success-color);
+  color: white;
+}
+
+/* ---------- Action Buttons ---------- */
+.action-btn.cancel {
+  background-color: var(--danger-color);
+  color: white;
+  border: none;
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: var(--font-size-base);
+  transition: background-color var(--transition-speed),
+    transform var(--transition-speed);
+}
+
+.action-btn.cancel:hover {
+  background-color: #e60000;
+  transform: scale(1.05);
+}
+
+.action-btn.cancel:active {
+  background-color: #cc0000;
+  transform: scale(1);
+}
+
+/* ---------- Footer ---------- */
+.footer {
+  background: var(--primary-color);
+  color: var(--header-footer-color);
+  text-align: center;
+  padding: var(--spacing-md);
+  margin-top: auto;
+  border-top: 2px solid var(--header-footer-color);
+}
+
+.footer a {
+  color: var(--header-footer-color);
+  text-decoration: none;
+  margin: 0 var(--spacing-sm);
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Dark Mode ---------- */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #121212;
+    color: #ffffff;
+  }
+
+  .header,
+  .footer {
+    background: #1f1f1f;
+  }
+
+  table th,
+  table td {
+    background: #1f1f1f;
+    color: #ffffff;
+  }
+}
+
+/* ---------- Media Queries ---------- */
+@media (max-width: 768px) {
+  .dashboard-metrics {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .metric-card {
+    font-size: 0.9rem;
+    padding: var(--spacing-sm);
+  }
+}

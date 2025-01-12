@@ -1,0 +1,221 @@
+/* Basic Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+  color: #333;
+  background-color: #f4f8fb;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow-y: auto; /* Ensure vertical scrolling */
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+/* Header Styles */
+.header {
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+}
+
+.logo {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.nav-links a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+}
+
+.user-actions span {
+  margin-left: 10px;
+  color: #333;
+}
+
+/* Main Content */
+.announcement-section {
+  padding: 30px;
+  max-width: 600px;
+  margin: auto;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.announcement-section h2 {
+  color: #004aad;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#announcement-form label {
+  font-weight: bold;
+  display: block;
+  margin-top: 10px;
+}
+
+#announcement-form input,
+#announcement-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  resize: vertical;
+}
+
+#announcement-form button {
+  margin-top: 20px;
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#announcement-form button:hover {
+  background-color: #0056b3;
+}
+/* Announcements List Section */
+.announcements-list {
+  padding: 30px;
+  max-width: 800px;
+  margin: auto;
+  text-align: center;
+}
+
+.announcements-list h3 {
+  color: #004aad;
+  margin-bottom: 20px;
+}
+/* Job Announcements Button */
+.button-link {
+  text-decoration: none;
+}
+
+.job-announcements-button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 1em;
+  color: white;
+  background-color: #004aad;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.job-announcements-button:hover {
+  background-color: #007bff;
+}
+/* Footer Styles */
+.footer {
+  background-color: #f4f8fb;
+  padding: 40px 0;
+  border-top: 2px solid #e0e0e0;
+  display: flex;
+
+  position: relative;
+  justify-content: center;
+  margin-top: auto;
+}
+
+.footer-container {
+  width: 85%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+}
+
+.footer-logo {
+  width: 50px;
+  height: auto;
+  margin-right: 10px;
+}
+
+.footer-brand h3 {
+  font-size: 1.5em;
+  color: #333;
+  font-weight: bold;
+}
+
+.footer-links {
+  display: flex;
+  gap: 15px;
+  text-align: center;
+}
+
+.footer-links a {
+  color: #007bff;
+  text-decoration: none;
+  font-size: 0.9em;
+  font-weight: 500;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+.footer-social {
+  text-align: center;
+  color: #333;
+}
+
+.footer-social p {
+  font-weight: 500;
+  margin-bottom: 5px;
+  font-size: 0.9em;
+}
+
+.social-icons a {
+  margin: 0 8px;
+  color: #007bff;
+  font-size: 1.2em;
+  transition: color 0.3s;
+}
+
+.social-icons a:hover {
+  color: #0056b3;
+}
+
+.footer-country {
+  text-align: center;
+  color: #333;
+  font-weight: 500;
+  font-size: 0.9em;
+}
+
+.footer-country select {
+  margin-top: 5px;
+  padding: 5px;
+  border: 1px solid #007bff;
+  border-radius: 5px;
+  color: #007bff;
+  font-weight: 500;
+}
