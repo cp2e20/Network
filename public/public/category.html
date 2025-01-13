@@ -99,7 +99,26 @@ document.addEventListener("DOMContentLoaded", () => {
       craftsmenList.innerHTML = "<p>Failed to load craftsmen data. Please try again later.</p>";
     });
 });
+document.addEventListener("DOMContentLoaded", () => {
+  const logoutLink = document.querySelector(".logout-link");
+  if (logoutLink) {
+    logoutLink.addEventListener("click", (e) => {
+      e.preventDefault();
 
+      // Clear stored session data
+      localStorage.removeItem("craftsmanEmail");
+      localStorage.removeItem("authToken");
+          localStorage.removeItem("craftsmanId"); // Remove craftsmanId
+
+    localStorage.clear();
+
+      // Optionally notify user (e.g., alert or toast)
+      alert("You have been logged out successfully!");
+
+      // Redirect to home page
+      window.location.href = "home.html";
+    });
+  }});
 </script>
 </body>
 </html>

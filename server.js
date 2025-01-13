@@ -47,16 +47,16 @@ app.get("/", (req, res) => {
 });
 
 app.get("/users", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "public","users.html"));
+  res.sendFile(path.join(__dirname, "public", "public", "users.html"));
 });
 
 app.get("/dashboard", (req, res) => {
-  res.sendFile(path.join(__dirname,"public", "public","dashboard.html"));
+  res.sendFile(path.join(__dirname, "public", "public", "dashboard.html"));
 });
 
 // Ensure craftsman dashboard is routed
 app.get("/Cdashborad", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "public","Cdashborad.html"));
+  res.sendFile(path.join(__dirname, "public", "public", "Cdashborad.html"));
 });
 // Protected Route Example
 app.get("/protected", authenticateToken, (req, res) => {
@@ -385,11 +385,8 @@ app.get("/craftsmen/count", async (req, res) => {
   }
 });
 
-
-
 // Routes
 app.use("/api/applications", applicationRoutes);
-
 
 //job applied for craftmen;
 app.get("/api/dashboard/jobs-applied", async (req, res) => {
@@ -400,7 +397,9 @@ app.get("/api/dashboard/jobs-applied", async (req, res) => {
   }
 
   try {
-    const jobsApplied = await Applicant.countDocuments({ craftsmanEmail: email });
+    const jobsApplied = await Applicant.countDocuments({
+      craftsmanEmail: email,
+    });
     res.status(200).json({ jobsApplied });
   } catch (error) {
     console.error("Error fetching jobs applied count:", error);
@@ -408,6 +407,14 @@ app.get("/api/dashboard/jobs-applied", async (req, res) => {
   }
 });
 
+app.post("/logout", (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).json({ error: "Logout failed" });
+    }
+    res.status(200).json({ message: "Logged out successfully" });
+  });
+});
 
 // Start the Server
 const PORT = process.env.PORT || 3000;

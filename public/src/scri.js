@@ -27,9 +27,9 @@ document.addEventListener("DOMContentLoaded", function () {
           alert("Login successful!");
 
           if (data.role === "craftsman") {
-            window.location.href = "./public/Cdashboard.html";
+            window.location.href = "/public/Cdashboard.html";
           } else {
-            window.location.href = "./public/dashboard.html";
+            window.location.href = "/public/dashboard.html";
           }
         } else {
           alert(data.message || "Login failed.");
