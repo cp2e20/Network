@@ -43,6 +43,9 @@ app.use("/categories", categoriesRoutes);
 
 // Static File Routes
 app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "public", "HOME1.html"));
+});
+app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "public", "home.html"));
 });
 
